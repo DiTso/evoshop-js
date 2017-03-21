@@ -2,10 +2,14 @@
 	Copyright (c) 2012 Brett Wejrowski
 
 	wojodesign.com
-	evoShopjs.org
-	http://github.com/wojodesign/evoShop-js
+	simplecartjs.org
+	http://github.com/wojodesign/simplecart-js
 
-	VERSION 3.0.5
+	Updated by Dmi3yy 
+	evoshop.pro
+	https://github.com/evoshop-pro/evoshop-js
+	
+	VERSION 4.0.0
 
 	Dual licensed under the MIT or GPL licenses.
 ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~*/
