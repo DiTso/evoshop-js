@@ -2,8 +2,8 @@
 	Copyright (c) 2012 Brett Wejrowski
 
 	wojodesign.com
-	simplecartjs.org
-	http://github.com/wojodesign/simplecart-js
+	evoShopjs.org
+	http://github.com/wojodesign/evoShop-js
 
 	VERSION 3.0.5
 
@@ -31,7 +31,7 @@
 
 
 
-		generateSimpleCart = function (space) {
+		generateevoShop = function (space) {
 
 			// stealing this from selectivizr
 			var selectorEngines = {
@@ -45,7 +45,7 @@
 				item_id					= 0,
 				item_id_namespace		= "SCI-",
 				sc_items				= {},
-				namespace				= space || "simpleCart",
+				namespace				= space || "evoShop",
 				selectorFunctions		= {},
 				eventFunctions			= {},
 				baseEvents				= {},
@@ -124,16 +124,16 @@
 				},
 
 
-				// main simpleCart object, function call is used for setting options
-				simpleCart = function (options) {
-					// shortcut for simpleCart.ready
+				// main evoShop object, function call is used for setting options
+				evoShop = function (options) {
+					// shortcut for evoShop.ready
 					if (isFunction(options)) {
-						return simpleCart.ready(options);
+						return evoShop.ready(options);
 					}
 
 					// set options
 					if (isObject(options)) {
-						return simpleCart.extend(settings, options);
+						return evoShop.extend(settings, options);
 					}
 				},
 
@@ -144,12 +144,12 @@
 				cartColumnViews;
 
 			// function for extending objects
-			simpleCart.extend = function (target, opts) {
+			evoShop.extend = function (target, opts) {
 				var next;
 
 				if (isUndefined(opts)) {
 					opts = target;
-					target = simpleCart;
+					target = evoShop;
 				}
 
 				for (next in opts) {
@@ -161,23 +161,23 @@
 			};
 
 			// create copy function
-			simpleCart.extend({
+			evoShop.extend({
 				copy: function (n) {
-					var cp = generateSimpleCart(n);
+					var cp = generateevoShop(n);
 					cp.init();
 					return cp;
 				}
 			});
 
 			// add in the core functionality
-			simpleCart.extend({
+			evoShop.extend({
 
 				isReady: false,
 
 				// this is where the magic happens, the add function
 				add: function (values, opt_quiet) {
 					var info		= values || {},
-						newItem		= new simpleCart.Item(info),
+						newItem		= new evoShop.Item(info),
 						addItem 	= true,
 						// optionally supress event triggers
 						quiet 		= opt_quiet === true ? opt_quiet : false,
@@ -185,7 +185,7 @@
 
 					// trigger before add event
 					if (!quiet) {
-					  	addItem = simpleCart.trigger('beforeAdd', [newItem]);
+					  	addItem = evoShop.trigger('beforeAdd', [newItem]);
 					
 						if (addItem === false) {
 							return false;
@@ -193,7 +193,7 @@
 					}
 					
 					// if the new item already exists, increment the value
-					oldItem = simpleCart.has(newItem);
+					oldItem = evoShop.has(newItem);
 					if (oldItem) {
 						oldItem.increment(newItem.quantity());
 						newItem = oldItem;
@@ -204,11 +204,11 @@
 					}
 
 					// update the cart
-					simpleCart.update();
+					evoShop.update();
 
 					if (!quiet) {
 						// trigger after add event
-						simpleCart.trigger('afterAdd', [newItem, oldItem == false]);
+						evoShop.trigger('afterAdd', [newItem, oldItem == false]);
 					}
 
 					// return a reference to the added item
@@ -236,7 +236,7 @@
 
 					for (next in items) {
 						if (Object.prototype.hasOwnProperty.call(items, next)) {
-							result = cb.call(simpleCart, items[next], x, next);
+							result = cb.call(evoShop, items[next], x, next);
 							if (result === false) {
 								return;
 							}
@@ -254,9 +254,9 @@
 					}
 					// search through items with the given criteria
 					if (isObject(id)) {
-						simpleCart.each(function (item) {
+						evoShop.each(function (item) {
 							var match = true;
-							simpleCart.each(id, function (val, x, attr) {
+							evoShop.each(id, function (val, x, attr) {
 
 								if (isString(val)) {
 									// less than or equal to
@@ -313,7 +313,7 @@
 
 						// use a new array so we don't give a reference to the
 						// cart's item array
-						simpleCart.each(function (item) {
+						evoShop.each(function (item) {
 							items.push(item);
 						});
 						return items;
@@ -332,7 +332,7 @@
 				has: function (item) {
 					var match = false;
 
-					simpleCart.each(function (testItem) {
+					evoShop.each(function (testItem) {
 						if (testItem.equals(item)) {
 							match = testItem;
 						}
@@ -344,7 +344,7 @@
 				empty: function () {
 					// remove each item individually so we see the remove events
 					var newItems = {};
-					simpleCart.each(function (item) {
+					evoShop.each(function (item) {
 						// send a param of true to make sure it doesn't
 						// update after every removal
 						// keep the item if the function returns false,
@@ -355,14 +355,14 @@
 						}
 					});
 					sc_items = newItems;
-					simpleCart.update();
+					evoShop.update();
 				},
 
 
 				// functions for accessing cart info
 				quantity: function () {
 					var quantity = 0;
-					simpleCart.each(function (item) {
+					evoShop.each(function (item) {
 						quantity += item.quantity();
 					});
 					return quantity;
@@ -370,36 +370,36 @@
 
 				total: function () {
 					var total = 0;
-					simpleCart.each(function (item) {
+					evoShop.each(function (item) {
 						total += item.total();
 					});
 					return total;
 				},
 
 				grandTotal: function () {
-					return simpleCart.total() + simpleCart.tax() + simpleCart.shipping();
+					return evoShop.total() + evoShop.tax() + evoShop.shipping();
 				},
 
 
 				// updating functions
 				update: function () {
-					simpleCart.save();
-					simpleCart.trigger("update");
+					evoShop.save();
+					evoShop.trigger("update");
 				},
 
 				init: function () {
-					simpleCart.load();
-					simpleCart.update();
-					simpleCart.ready();
+					evoShop.load();
+					evoShop.update();
+					evoShop.ready();
 				},
 
 				// view management
 				$: function (selector) {
-					return new simpleCart.ELEMENT(selector);
+					return new evoShop.ELEMENT(selector);
 				},
 
 				$create: function (tag) {
-					return simpleCart.$(document.createElement(tag));
+					return evoShop.$(document.createElement(tag));
 				},
 
 				setupViewTool: function () {
@@ -417,7 +417,7 @@
 								// set the selector engine and extend the prototype of our
 								// element wrapper class
 								$engine = context;
-								simpleCart.extend(simpleCart.ELEMENT._, selectorFunctions[engine]);
+								evoShop.extend(evoShop.ELEMENT._, selectorFunctions[engine]);
 								return;
 							}
 						}
@@ -427,7 +427,7 @@
 				// return a list of id's in the cart
 				ids: function () {
 					var ids = [];
-					simpleCart.each(function (item) {
+					evoShop.each(function (item) {
 						ids.push(item.id());
 					});
 					return ids;
@@ -437,13 +437,13 @@
 
 				// storage
 				save: function () {
-					simpleCart.trigger('beforeSave');
+					evoShop.trigger('beforeSave');
 
 					var items = {};
 
 					// save all the items
-					simpleCart.each(function (item) {
-						items[item.id()] = simpleCart.extend(item.fields(), item.options());
+					evoShop.each(function (item) {
+						items[item.id()] = evoShop.extend(item.fields(), item.options());
 					});
 
 					// try statement to catch storing errors and avoid
@@ -453,10 +453,10 @@
  							localStorage.setItem(namespace + "_items", JSON.stringify(items));						
  						}
  						catch (e){
- 							simpleCart.error( "Error storing data: " + e );
+ 							evoShop.error( "Error storing data: " + e );
  						}
  					}
-					simpleCart.trigger('afterSave');
+					evoShop.trigger('afterSave');
 				},
 
 				load: function () {
@@ -475,15 +475,15 @@
 					// have a playing card pluckin the spokes now...
 					// soundin like a harley.
 					try {
-						simpleCart.each(JSON.parse(items), function (item) {
-							simpleCart.add(item, true);
+						evoShop.each(JSON.parse(items), function (item) {
+							evoShop.add(item, true);
 						});
 					} catch (e){
-						simpleCart.error( "Error Loading data: " + e );
+						evoShop.error( "Error Loading data: " + e );
 					}
 
 
-					simpleCart.trigger('load');
+					evoShop.trigger('load');
 				},
 
 				// ready function used as a shortcut for bind('ready',fn)
@@ -491,18 +491,18 @@
 
 					if (isFunction(fn)) {
 						// call function if already ready already
-						if (simpleCart.isReady) {
-							fn.call(simpleCart);
+						if (evoShop.isReady) {
+							fn.call(evoShop);
 
 						// bind if not ready
 						} else {
-							simpleCart.bind('ready', fn);
+							evoShop.bind('ready', fn);
 						}
 
 					// trigger ready event
-					} else if (isUndefined(fn) && !simpleCart.isReady) {
-						simpleCart.trigger('ready');
-						simpleCart.isReady = true;
+					} else if (isUndefined(fn) && !evoShop.isReady) {
+						evoShop.trigger('ready');
+						evoShop.isReady = true;
 					}
 
 				},
@@ -515,8 +515,8 @@
 					} else if (isObject(message) && isString(message.message)) {
 						msg = message.message;
 					}
-					try { console.log("simpleCart(js) Error: " + msg); } catch (e) {}
-					simpleCart.trigger('error', [message]);
+					try { console.log("evoShop(js) Error: " + msg); } catch (e) {}
+					evoShop.trigger('error', [message]);
 				}
 			});
 
@@ -524,14 +524,14 @@
 			/*******************************************************************
 			 *	TAX AND SHIPPING
 			 *******************************************************************/
-			simpleCart.extend({
+			evoShop.extend({
 
 				// TODO: tax and shipping
 				tax: function () {
-					var totalToTax = settings.taxShipping ? simpleCart.total() + simpleCart.shipping() : simpleCart.total(),
-						cost = simpleCart.taxRate() * totalToTax;
+					var totalToTax = settings.taxShipping ? evoShop.total() + evoShop.shipping() : evoShop.total(),
+						cost = evoShop.taxRate() * totalToTax;
 					
-					simpleCart.each(function (item) {
+					evoShop.each(function (item) {
 						if (item.get('tax')) {
 							cost += item.get('tax');
 						} else if (item.get('taxRate')) {
@@ -549,21 +549,21 @@
 
 					// shortcut to extend options with custom shipping
 					if (isFunction(opt_custom_function)) {
-						simpleCart({
+						evoShop({
 							shippingCustom: opt_custom_function
 						});
 						return;
 					}
 
-					var cost = settings.shippingQuantityRate * simpleCart.quantity() +
-							settings.shippingTotalRate * simpleCart.total() +
+					var cost = settings.shippingQuantityRate * evoShop.quantity() +
+							settings.shippingTotalRate * evoShop.total() +
 							settings.shippingFlatRate;
 
 					if (isFunction(settings.shippingCustom)) {
-						cost += settings.shippingCustom.call(simpleCart);
+						cost += settings.shippingCustom.call(evoShop);
 					}
 
-					simpleCart.each(function (item) {
+					evoShop.each(function (item) {
 						cost += parseFloat(item.get('shipping') || 0);
 					});
 					return parseFloat(cost);
@@ -582,7 +582,7 @@
 				},
 
 				currency: function (item, column) {
-					return simpleCart.toCurrency(item.get(column.attr) || 0);
+					return evoShop.toCurrency(item.get(column.attr) || 0);
 				},
 
 				link: function (item, column) {
@@ -613,7 +613,7 @@
 			// cart column wrapper class and functions
 			function cartColumn(opts) {
 				var options = opts || {};
-				return simpleCart.extend({
+				return evoShop.extend({
 					attr			: "",
 					label			: "",
 					view			: "attr",
@@ -626,11 +626,11 @@
 			function cartCellView(item, column) {
 				var viewFunc = isFunction(column.view) ? column.view : isString(column.view) && isFunction(cartColumnViews[column.view]) ? cartColumnViews[column.view] : cartColumnViews.attr;
 
-				return viewFunc.call(simpleCart, item, column);
+				return viewFunc.call(evoShop, item, column);
 			}
 
 
-			simpleCart.extend({
+			evoShop.extend({
 
 				// write out cart
 				writeCart: function (selector) {
@@ -640,10 +640,10 @@
 						TH = isTable ? 'th' : 'div',
 						TD = isTable ? 'td' : 'div',
 						THEAD = isTable ? 'thead' : 'div',
-						cart_container = simpleCart.$create(TABLE).addClass(settings.cartClass),
-						thead_container = simpleCart.$create(THEAD),
- 						header_container = simpleCart.$create(TR).addClass(settings.headerRowClass),
-						container = simpleCart.$(selector),
+						cart_container = evoShop.$create(TABLE).addClass(settings.cartClass),
+						thead_container = evoShop.$create(THEAD),
+ 						header_container = evoShop.$create(TR).addClass(settings.headerRowClass),
+						container = evoShop.$(selector),
 						column,
 						klass,
 						label,
@@ -665,13 +665,13 @@
 
 						// append the header cell
 						header_container.append(
-							simpleCart.$create(TH).addClass(klass).html(label)
+							evoShop.$create(TH).addClass(klass).html(label)
 						);
 					}
 
 					// cycle through the items
-					simpleCart.each(function (item, y) {
-						simpleCart.createCartRow(item, y, TR, TD, cart_container);
+					evoShop.each(function (item, y) {
+						evoShop.createCartRow(item, y, TR, TD, cart_container);
 					});
 
 					return cart_container;
@@ -679,7 +679,7 @@
 
 				// generate a cart row from an item
 				createCartRow: function (item, y, TR, TD, container) {
-					var row = simpleCart.$create(TR)
+					var row = evoShop.$create(TR)
 										.addClass('itemRow row-' + y + " " + (y % 2 ? "even" : "odd"))
 										.attr('id', "cartItem_" + item.id()),
 						j,
@@ -696,7 +696,7 @@
 						column	= cartColumn(settings.cartColumns[j]);
 						klass	= "item-" + (column.attr || (isString(column.view) ? column.view : column.label || column.text || "cell")) + " " + column.className;
 						content = cartCellView(item, column);
-						cell	= simpleCart.$create(TD).addClass(klass).html(content);
+						cell	= evoShop.$create(TD).addClass(klass).html(content);
 
 						row.append(cell);
 					}
@@ -709,7 +709,7 @@
 			 *	CART ITEM CLASS MANAGEMENT
 			 *******************************************************************/
 
-			simpleCart.Item = function (info) {
+			evoShop.Item = function (info) {
 
 				// we use the data object to track values for the item
 				var _data = {},
@@ -717,7 +717,7 @@
 
 				// cycle through given attributes and set them to the data object
 				if (isObject(info)) {
-					simpleCart.extend(_data, info);
+					evoShop.extend(_data, info);
 				}
 
 				// set the item id
@@ -733,7 +733,7 @@
 					// check to make sure price is valid
 					if (isString(_data.price)) {
 					   // trying to remove all chars that aren't numbers or '.'
-						_data.price = parseFloat(_data.price.replace(simpleCart.currency().decimal, ".").replace(/[^0-9\.]+/ig, ""));
+						_data.price = parseFloat(_data.price.replace(evoShop.currency().decimal, ".").replace(/[^0-9\.]+/ig, ""));
 
 					}
 					if (isNaN(_data.price)) {
@@ -745,7 +745,7 @@
 
 					// check to make sure quantity is valid
 					if (isString(_data.quantity)) {
-						_data.quantity = parseInt(_data.quantity.replace(simpleCart.currency().delimiter, ""), 10);
+						_data.quantity = parseInt(_data.quantity.replace(evoShop.currency().delimiter, ""), 10);
 					}
 					if (isNaN(_data.quantity)) {
 						_data.quantity = 1;
@@ -796,9 +796,9 @@
 				};
 				me.options = function () {
 					var data = {};
-					simpleCart.each(_data,function (val, x, label) {
+					evoShop.each(_data,function (val, x, label) {
 						var add = true;
-						simpleCart.each(me.reservedFields(), function (field) {
+						evoShop.each(me.reservedFields(), function (field) {
 							if (field === label) {
 								add = false;
 							}
@@ -816,7 +816,7 @@
 				checkQuantityAndPrice();
 			};
 
-			simpleCart.Item._ = simpleCart.Item.prototype = {
+			evoShop.Item._ = evoShop.Item.prototype = {
 
 				// editing the item quantity
 				increment: function (amount) {
@@ -836,13 +836,13 @@
 					return this.increment(-parseInt(diff, 10));
 				},
 				remove: function (skipUpdate) {
-					var removeItemBool = simpleCart.trigger("beforeRemove", [sc_items[this.id()]]);
+					var removeItemBool = evoShop.trigger("beforeRemove", [sc_items[this.id()]]);
 					if (removeItemBool === false ) {
 						return false;
 					}
 					delete sc_items[this.id()];
 					if (!skipUpdate) { 
-						simpleCart.update();
+						evoShop.update();
 					}
 					return null;
 				},
@@ -856,7 +856,7 @@
 				fields: function () {
 					var data = {},
 						me = this;
-					simpleCart.each(me.reservedFields(), function (field) {
+					evoShop.each(me.reservedFields(), function (field) {
 						if (me.get(field)) {
 							data[field] = me.get(field);
 						}
@@ -876,8 +876,8 @@
 				},
 				price: function (val) {
 					return isUndefined(val) ?
-							parseFloat((this.get("price",true).toString()).replace(simpleCart.currency().symbol,"").replace(simpleCart.currency().delimiter,"") || 1) :
-							this.set("price", parseFloat((val).toString().replace(simpleCart.currency().symbol,"").replace(simpleCart.currency().delimiter,"")));
+							parseFloat((this.get("price",true).toString()).replace(evoShop.currency().symbol,"").replace(evoShop.currency().delimiter,"") || 1) :
+							this.set("price", parseFloat((val).toString().replace(evoShop.currency().symbol,"").replace(evoShop.currency().delimiter,"")));
 				},
 				id: function () {
 					return this.get('id',false);
@@ -895,60 +895,60 @@
 			 *	CHECKOUT MANAGEMENT
 			 *******************************************************************/
 
-			simpleCart.extend({
+			evoShop.extend({
 				checkout: function () {
 					if (settings.checkout.type.toLowerCase() === 'custom' && isFunction(settings.checkout.fn)) {
-						settings.checkout.fn.call(simpleCart,settings.checkout);
-					} else if (isFunction(simpleCart.checkout[settings.checkout.type])) {
-						var checkoutData = simpleCart.checkout[settings.checkout.type].call(simpleCart,settings.checkout);
+						settings.checkout.fn.call(evoShop,settings.checkout);
+					} else if (isFunction(evoShop.checkout[settings.checkout.type])) {
+						var checkoutData = evoShop.checkout[settings.checkout.type].call(evoShop,settings.checkout);
 						
 						// if the checkout method returns data, try to send the form
 						if( checkoutData.data && checkoutData.action && checkoutData.method ){
 							// if no one has any objections, send the checkout form
-							if( false !== simpleCart.trigger('beforeCheckout', [checkoutData.data]) ){
-								simpleCart.generateAndSendForm( checkoutData );
+							if( false !== evoShop.trigger('beforeCheckout', [checkoutData.data]) ){
+								evoShop.generateAndSendForm( checkoutData );
 							}
 						}
 						
 					} else {
-						simpleCart.error("No Valid Checkout Method Specified");
+						evoShop.error("No Valid Checkout Method Specified");
 					}
 				},
 				extendCheckout: function (methods) {
-					return simpleCart.extend(simpleCart.checkout, methods);
+					return evoShop.extend(evoShop.checkout, methods);
 				},
 				generateAndSendForm: function (opts) {
-					var form = simpleCart.$create("form");
+					var form = evoShop.$create("form");
 					form.attr('style', 'display:none;');
 					form.attr('action', opts.action);
 					form.attr('method', opts.method);
-					simpleCart.each(opts.data, function (val, x, name) {
+					evoShop.each(opts.data, function (val, x, name) {
 						form.append(
-							simpleCart.$create("input").attr("type","hidden").attr("name",name).val(val)
+							evoShop.$create("input").attr("type","hidden").attr("name",name).val(val)
 						);
 					});
-					simpleCart.$("body").append(form);
+					evoShop.$("body").append(form);
 					form.el.submit();
 					form.remove();
 				}
 			});
 
-			simpleCart.extendCheckout({
+			evoShop.extendCheckout({
 				PayPal: function (opts) {
 					// account email is required
 					if (!opts.email) {
-						return simpleCart.error("No email provided for PayPal checkout");
+						return evoShop.error("No email provided for PayPal checkout");
 					}
 
 					// build basic form options
 					var data = {
 							  cmd			: "_cart"
 							, upload		: "1"
-							, currency_code : simpleCart.currency().code
+							, currency_code : evoShop.currency().code
 							, business		: opts.email
 							, rm			: opts.method === "GET" ? "0" : "2"
-							, tax_cart		: (simpleCart.tax()*1).toFixed(2)
-							, handling_cart : (simpleCart.shipping()*1).toFixed(2)
+							, tax_cart		: (evoShop.tax()*1).toFixed(2)
+							, handling_cart : (evoShop.shipping()*1).toFixed(2)
 							, charset		: "utf-8"
 						},
 						action = opts.sandbox ? "https://www.sandbox.paypal.com/cgi-bin/webscr" : "https://www.paypal.com/cgi-bin/webscr",
@@ -971,7 +971,7 @@
 
 
 					// add all the items to the form data
-					simpleCart.each(function (item,x) {
+					evoShop.each(function (item,x) {
 						var counter = x+1,
 							item_options = item.options(),
 							optionCount = 0,
@@ -985,13 +985,13 @@
 
 
 						// add the options
-						simpleCart.each(item_options, function (val,k,attr) {
+						evoShop.each(item_options, function (val,k,attr) {
 							// paypal limits us to 10 options
 							if (k < 10) {
 		
 								// check to see if we need to exclude this from checkout
 								send = true;
-								simpleCart.each(settings.excludeFromCheckout, function (field_name) {
+								evoShop.each(settings.excludeFromCheckout, function (field_name) {
 									if (field_name === attr) { send = false; }
 								});
 								if (send) {
@@ -1021,20 +1021,20 @@
 				GoogleCheckout: function (opts) {
 					// account id is required
 					if (!opts.merchantID) {
-						return simpleCart.error("No merchant id provided for GoogleCheckout");
+						return evoShop.error("No merchant id provided for GoogleCheckout");
 					}
 
 					// google only accepts USD and GBP
-					if (simpleCart.currency().code !== "USD" && simpleCart.currency().code !== "GBP") {
-						return simpleCart.error("Google Checkout only accepts USD and GBP");
+					if (evoShop.currency().code !== "USD" && evoShop.currency().code !== "GBP") {
+						return evoShop.error("Google Checkout only accepts USD and GBP");
 					}
 
 					// build basic form options
 					var data = {
 							// TODO: better shipping support for this google
 							  ship_method_name_1	: "Shipping"
-							, ship_method_price_1	: simpleCart.shipping()
-							, ship_method_currency_1: simpleCart.currency().code
+							, ship_method_price_1	: evoShop.shipping()
+							, ship_method_currency_1: evoShop.currency().code
 							, _charset_				: ''
 						},
 						action = "https://checkout.google.com/api/checkout/v2/checkoutForm/Merchant/" + opts.merchantID,
@@ -1042,21 +1042,21 @@
 
 
 					// add items to data
-					simpleCart.each(function (item,x) {
+					evoShop.each(function (item,x) {
 						var counter = x+1,
 							options_list = [],
 							send;
 						data['item_name_' + counter]		= item.get('name');
 						data['item_quantity_' + counter]	= item.quantity();
 						data['item_price_' + counter]		= item.price();
-						data['item_currency_' + counter]	= simpleCart.currency().code;
-						data['item_tax_rate' + counter]		= item.get('taxRate') || simpleCart.taxRate();
+						data['item_currency_' + counter]	= evoShop.currency().code;
+						data['item_tax_rate' + counter]		= item.get('taxRate') || evoShop.taxRate();
 
 						// create array of extra options
-						simpleCart.each(item.options(), function (val,x,attr) {
+						evoShop.each(item.options(), function (val,x,attr) {
 							// check to see if we need to exclude this from checkout
 							send = true;
-							simpleCart.each(settings.excludeFromCheckout, function (field_name) {
+							evoShop.each(settings.excludeFromCheckout, function (field_name) {
 								if (field_name === attr) { send = false; }
 							});
 							if (send) {
@@ -1082,13 +1082,13 @@
 				AmazonPayments: function (opts) {
 					// required options
 					if (!opts.merchant_signature) {
-						return simpleCart.error("No merchant signature provided for Amazon Payments");
+						return evoShop.error("No merchant signature provided for Amazon Payments");
 					}
 					if (!opts.merchant_id) {
-						return simpleCart.error("No merchant id provided for Amazon Payments");
+						return evoShop.error("No merchant id provided for Amazon Payments");
 					}
 					if (!opts.aws_access_key_id) {
-						return simpleCart.error("No AWS access key id provided for Amazon Payments");
+						return evoShop.error("No AWS access key id provided for Amazon Payments");
 					}
 
 
@@ -1096,8 +1096,8 @@
 					var data = {
 							  aws_access_key_id:	opts.aws_access_key_id
 							, merchant_signature:	opts.merchant_signature
-							, currency_code:		simpleCart.currency().code
-							, tax_rate:				simpleCart.taxRate()
+							, currency_code:		evoShop.currency().code
+							, tax_rate:				evoShop.taxRate()
 							, weight_unit:			opts.weight_unit || 'lb'
 						},
 						action = "https://payments" + (opts.sandbox ? "-sandbox" : "") + ".amazon.com/checkout/" + opts.merchant_id,
@@ -1105,7 +1105,7 @@
 
 
 					// add items to data
-					simpleCart.each(function (item,x) {
+					evoShop.each(function (item,x) {
 						var counter = x+1,
 							options_list = [];
 						data['item_title_' + counter]			= item.get('name');
@@ -1122,10 +1122,10 @@
 
 
 						// create array of extra options
-						simpleCart.each(item.options(), function (val,x,attr) {
+						evoShop.each(item.options(), function (val,x,attr) {
 							// check to see if we need to exclude this from checkout
 							var send = true;
-							simpleCart.each(settings.excludeFromCheckout, function (field_name) {
+							evoShop.each(settings.excludeFromCheckout, function (field_name) {
 								if (field_name === attr) { send = false; }
 							});
 							if (send && attr !== 'weight' && attr !== 'tax') {
@@ -1150,23 +1150,23 @@
 				SendForm: function (opts) {
 					// url required
 					if (!opts.url) {
-						return simpleCart.error('URL required for SendForm Checkout');
+						return evoShop.error('URL required for SendForm Checkout');
 					}
 
 					// build basic form options
 					var data = {
-							  currency	: simpleCart.currency().code
-							, shipping	: simpleCart.shipping()
-							, tax		: simpleCart.tax()
-							, taxRate	: simpleCart.taxRate()
-							, itemCount : simpleCart.find({}).length
+							  currency	: evoShop.currency().code
+							, shipping	: evoShop.shipping()
+							, tax		: evoShop.tax()
+							, taxRate	: evoShop.taxRate()
+							, itemCount : evoShop.find({}).length
 						},
 						action = opts.url,
 						method = opts.method === "GET" ? "GET" : "POST";
 
 
 					// add items to data
-					simpleCart.each(function (item,x) {
+					evoShop.each(function (item,x) {
 						var counter = x+1,
 							options_list = [],
 							send;
@@ -1175,10 +1175,10 @@
 						data['item_price_' + counter]		= item.price();
 
 						// create array of extra options
-						simpleCart.each(item.options(), function (val,x,attr) {
+						evoShop.each(item.options(), function (val,x,attr) {
 							// check to see if we need to exclude this from checkout
 							send = true;
-							simpleCart.each(settings.excludeFromCheckout, function (field_name) {
+							evoShop.each(settings.excludeFromCheckout, function (field_name) {
 								if (field_name === attr) { send = false; }
 							});
 							if (send) {
@@ -1200,7 +1200,7 @@
 					}
 
 					if (opts.extra_data) {
-						data = simpleCart.extend(data,opts.extra_data);
+						data = evoShop.extend(data,opts.extra_data);
 					}
 
 					// return the data for the checkout form
@@ -1234,7 +1234,7 @@
 					var eventNameList = name.split(/ +/);
 					
 					// iterate through and bind each event
-					simpleCart.each( eventNameList , function( eventName ){
+					evoShop.each( eventNameList , function( eventName ){
 						if (this._events[eventName] === true) {
 							callback.apply(this);
 						} else if (!isUndefined(this._events[eventName])) {
@@ -1271,11 +1271,11 @@
 			};
 			// alias for bind
 			eventFunctions.on = eventFunctions.bind;
-			simpleCart.extend(eventFunctions);
-			simpleCart.extend(simpleCart.Item._, eventFunctions);
+			evoShop.extend(eventFunctions);
+			evoShop.extend(evoShop.Item._, eventFunctions);
 
 
-			// base simpleCart events in options
+			// base evoShop events in options
 			baseEvents = {
 				  beforeAdd				: null
 				, afterAdd				: null
@@ -1291,11 +1291,11 @@
 			};
 			
 			// extend with base events
-			simpleCart(baseEvents);
+			evoShop(baseEvents);
 
 			// bind settings to events
-			simpleCart.each(baseEvents, function (val, x, name) {
-				simpleCart.bind(name, function () {
+			evoShop.each(baseEvents, function (val, x, name) {
+				evoShop.bind(name, function () {
 					if (isFunction(settings[name])) {
 						settings[name].apply(this, arguments);
 					}
@@ -1305,23 +1305,23 @@
 			/*******************************************************************
 			 *	FORMATTING FUNCTIONS
 			 *******************************************************************/
-			simpleCart.extend({
+			evoShop.extend({
 				toCurrency: function (number,opts) {
 					var num = parseFloat(number),
 						opt_input = opts || {},
-						_opts = simpleCart.extend(simpleCart.extend({
+						_opts = evoShop.extend(evoShop.extend({
 							  symbol:		"$"
 							, decimal:		"."
 							, delimiter:	","
 							, accuracy:		2
 							, after: false
-						}, simpleCart.currency()), opt_input),
+						}, evoShop.currency()), opt_input),
 
 						numParts = num.toFixed(_opts.accuracy).split("."),
 						dec = numParts[1],
 						ints = numParts[0];
 			
-					ints = simpleCart.chunk(ints.reverse(), 3).join(_opts.delimiter.reverse()).reverse();
+					ints = evoShop.chunk(ints.reverse(), 3).join(_opts.delimiter.reverse()).reverse();
 
 					return	(!_opts.after ? _opts.symbol : "") +
 							ints +
@@ -1350,7 +1350,7 @@
 
 
 			// currency functions
-			simpleCart.extend({
+			evoShop.extend({
 				currency: function (currency) {
 					if (isString(currency) && !isUndefined(currencies[currency])) {
 						settings.currency = currency;
@@ -1368,49 +1368,49 @@
 			 *	VIEW MANAGEMENT
 			 *******************************************************************/
 
-			simpleCart.extend({
+			evoShop.extend({
 				// bind outlets to function
 				bindOutlets: function (outlets) {
-					simpleCart.each(outlets, function (callback, x, selector) {
+					evoShop.each(outlets, function (callback, x, selector) {
 						
-						simpleCart.bind('update', function () {
-							simpleCart.setOutlet("." + namespace + "_" + selector, callback);
+						evoShop.bind('update', function () {
+							evoShop.setOutlet("." + namespace + "_" + selector, callback);
 						});
 					});
 				},
 
 				// set function return to outlet
 				setOutlet: function (selector, func) {
-					var val = func.call(simpleCart, selector);
+					var val = func.call(evoShop, selector);
 					if (isObject(val) && val.el) {
-						simpleCart.$(selector).html(' ').append(val);
+						evoShop.$(selector).html(' ').append(val);
 					} else if (!isUndefined(val)) {
-						simpleCart.$(selector).html(val);
+						evoShop.$(selector).html(val);
 					}
 				},
 
 				// bind click events on inputs
 				bindInputs: function (inputs) {
-					simpleCart.each(inputs, function (info) {
-						simpleCart.setInput("." + namespace + "_" + info.selector, info.event, info.callback);
+					evoShop.each(inputs, function (info) {
+						evoShop.setInput("." + namespace + "_" + info.selector, info.event, info.callback);
 					});
 				},
 
 				// attach events to inputs	
 				setInput: function (selector, event, func) {
-					simpleCart.$(selector).live(event, func);
+					evoShop.$(selector).live(event, func);
 				}
 			});		
 
 
 			// class for wrapping DOM selector shit
-			simpleCart.ELEMENT = function (selector) {
+			evoShop.ELEMENT = function (selector) {
 
 				this.create(selector);
 				this.selector = selector || null; // "#" + this.attr('id'); TODO: test length?
 			};
 
-			simpleCart.extend(selectorFunctions, {
+			evoShop.extend(selectorFunctions, {
 
 				"MooTools"		: {
 					text: function (text) {
@@ -1448,7 +1448,7 @@
 					},
 					each: function (callback) {
 						if (isFunction(callback)) {
-							simpleCart.each(this.el, function( e, i, c) {
+							evoShop.each(this.el, function( e, i, c) {
 								callback.call( i, i, e, c );
 							});
 						}
@@ -1470,7 +1470,7 @@
 					live: function (	event,callback) {
 						var selector = this.selector;
 						if (isFunction(callback)) {
-							simpleCart.$("body").el.addEvent(event + ":relay(" + selector + ")", function (e, el) {
+							evoShop.$("body").el.addEvent(event + ":relay(" + selector + ")", function (e, el) {
 								callback.call(el, e);
 							});
 						}
@@ -1479,13 +1479,13 @@
 						return this.el.match(selector);
 					},
 					parent: function () {
-						return simpleCart.$(this.el.getParent());
+						return evoShop.$(this.el.getParent());
 					},
 					find: function (selector) {
-						return simpleCart.$(this.el.getElements(selector));
+						return evoShop.$(this.el.getElements(selector));
 					},
 					closest: function (selector) {
-						return simpleCart.$(this.el.getParent(selector));
+						return evoShop.$(this.el.getParent(selector));
 					},
 					descendants: function () {
 						return this.find("*");
@@ -1564,7 +1564,7 @@
 					},
 					each: function (callback) {
 						if (isFunction(callback)) {
-							simpleCart.each(this.el, function( e, i, c) {
+							evoShop.each(this.el, function( e, i, c) {
 								callback.call( i, i, e, c );
 							});
 						}
@@ -1595,16 +1595,16 @@
 						}
 					},
 					parent: function () {
-						return simpleCart.$(this.el.up());
+						return evoShop.$(this.el.up());
 					},
 					find: function (selector) {
-						return simpleCart.$(this.el.getElementsBySelector(selector));
+						return evoShop.$(this.el.getElementsBySelector(selector));
 					},
 					closest: function (selector) {
-						return simpleCart.$(this.el.up(selector));
+						return evoShop.$(this.el.up(selector));
 					},
 					descendants: function () {
-						return simpleCart.$(this.el.descendants());
+						return evoShop.$(this.el.descendants());
 					},
 					tag: function () {
 						return this.el.tagName;
@@ -1678,19 +1678,19 @@
 						return this;
 					},
 					parent: function () {
-						return simpleCart.$(this.el.parent());
+						return evoShop.$(this.el.parent());
 					},
 					find: function (selector) {
-						return simpleCart.$(this.el.find(selector));
+						return evoShop.$(this.el.find(selector));
 					},
 					closest: function (selector) {
-						return simpleCart.$(this.el.closest(selector));
+						return evoShop.$(this.el.closest(selector));
 					},
 					tag: function () {
 						return this.el[0].tagName;
 					},
 					descendants: function () {
-						return simpleCart.$(this.el.find("*"));
+						return evoShop.$(this.el.find("*"));
 					},
 					submit: function() {
 						return this.el.submit();
@@ -1701,68 +1701,68 @@
 					}
 				}
 			});
-			simpleCart.ELEMENT._ = simpleCart.ELEMENT.prototype;
+			evoShop.ELEMENT._ = evoShop.ELEMENT.prototype;
 
 			// bind the DOM setup to the ready event
-			simpleCart.ready(simpleCart.setupViewTool);
+			evoShop.ready(evoShop.setupViewTool);
 
 			// bind the input and output events
-			simpleCart.ready(function () {
-				simpleCart.bindOutlets({
+			evoShop.ready(function () {
+				evoShop.bindOutlets({
 					total: function () {
-						return simpleCart.toCurrency(simpleCart.total());
+						return evoShop.toCurrency(evoShop.total());
 					}
 					, quantity: function () {
-						return simpleCart.quantity();
+						return evoShop.quantity();
 					}
 					, items: function (selector) {
-						simpleCart.writeCart(selector);
+						evoShop.writeCart(selector);
 					}
 					, tax: function () {
-						return simpleCart.toCurrency(simpleCart.tax());
+						return evoShop.toCurrency(evoShop.tax());
 					}
 					, taxRate: function () {
-						return simpleCart.taxRate().toFixed();
+						return evoShop.taxRate().toFixed();
 					}
 					, shipping: function () {
-						return simpleCart.toCurrency(simpleCart.shipping());
+						return evoShop.toCurrency(evoShop.shipping());
 					}
 					, grandTotal: function () {
-						return simpleCart.toCurrency(simpleCart.grandTotal());
+						return evoShop.toCurrency(evoShop.grandTotal());
 					}
 				});
-				simpleCart.bindInputs([
+				evoShop.bindInputs([
 					{	  selector: 'checkout'
 						, event: 'click'
 						, callback: function () {
-							simpleCart.checkout();
+							evoShop.checkout();
 						}
 					}
 					, {	  selector: 'empty'
 						, event: 'click'
 						, callback: function () {
-							simpleCart.empty();
+							evoShop.empty();
 						}
 					}
 					, {	  selector: 'increment'
 						, event: 'click'
 						, callback: function () {
-							simpleCart.find(simpleCart.$(this).closest('.itemRow').attr('id').split("_")[1]).increment();
-							simpleCart.update();
+							evoShop.find(evoShop.$(this).closest('.itemRow').attr('id').split("_")[1]).increment();
+							evoShop.update();
 						}
 					}
 					, {	  selector: 'decrement'
 						, event: 'click'
 						, callback: function () {
-							simpleCart.find(simpleCart.$(this).closest('.itemRow').attr('id').split("_")[1]).decrement();
-							simpleCart.update();
+							evoShop.find(evoShop.$(this).closest('.itemRow').attr('id').split("_")[1]).decrement();
+							evoShop.update();
 						}
 					}
 					/* remove from cart */
 					, {	  selector: 'remove'
 						, event: 'click'
 						, callback: function () {
-							simpleCart.find(simpleCart.$(this).closest('.itemRow').attr('id').split("_")[1]).remove();
+							evoShop.find(evoShop.$(this).closest('.itemRow').attr('id').split("_")[1]).remove();
 						}
 					}
 
@@ -1770,14 +1770,14 @@
 					, {	  selector: 'input'
 						, event: 'change'
 						, callback: function () {
-							var $input = simpleCart.$(this),
+							var $input = evoShop.$(this),
 								$parent = $input.parent(),
 								classList = $parent.attr('class').split(" ");
-							simpleCart.each(classList, function (klass) {
+							evoShop.each(classList, function (klass) {
 								if (klass.match(/item-.+/i)) {
 									var field = klass.split("-")[1];
-									simpleCart.find($parent.closest('.itemRow').attr('id').split("_")[1]).set(field,$input.val());
-									simpleCart.update();
+									evoShop.find($parent.closest('.itemRow').attr('id').split("_")[1]).set(field,$input.val());
+									evoShop.update();
 									return;
 								}
 							});
@@ -1788,11 +1788,11 @@
 					, { selector: 'shelfItem .item_add'
 						, event: 'click'
 						, callback: function () {
-							var $button = simpleCart.$(this),
+							var $button = evoShop.$(this),
 								fields = {};
 
 							$button.closest("." + namespace + "_shelfItem").descendants().each(function (x,item) {
-								var $item = simpleCart.$(item);
+								var $item = evoShop.$(item);
 
 								// check to see if the class matches the item_[fieldname] pattern
 								if ($item.attr("class") &&
@@ -1800,7 +1800,7 @@
 									!$item.attr('class').match(/item_add/)) {
 
 									// find the class name
-									simpleCart.each($item.attr('class').split(' '), function (klass) {
+									evoShop.each($item.attr('class').split(' '), function (klass) {
 										var attr,
 											val,
 											type;
@@ -1835,7 +1835,7 @@
 							});
 
 							// add the item
-							simpleCart.add(fields);
+							evoShop.add(fields);
 						}
 					}
 				]);
@@ -1851,7 +1851,7 @@
 			if (document.addEventListener) {
 				window.DOMContentLoaded = function () {
 					document.removeEventListener("DOMContentLoaded", DOMContentLoaded, false);
-					simpleCart.init();
+					evoShop.init();
 				};
 
 			} else if (document.attachEvent) {
@@ -1859,14 +1859,14 @@
 					// Make sure body exists, at least, in case IE gets a little overzealous (ticket #5443).
 					if (document.readyState === "complete") {
 						document.detachEvent("onreadystatechange", DOMContentLoaded);
-						simpleCart.init();
+						evoShop.init();
 					}
 				};
 			}
 			// The DOM ready check for Internet Explorer
 			// used from jQuery
 			function doScrollCheck() {
-				if (simpleCart.isReady) {
+				if (evoShop.isReady) {
 					return;
 				}
 
@@ -1880,7 +1880,7 @@
 				}
 
 				// and execute any waiting functions
-				simpleCart.init();
+				evoShop.init();
 			}
 			
 			// bind ready event used from jquery
@@ -1890,7 +1890,7 @@
 				// browser event has already occurred.
 				if (document.readyState === "complete") {
 					// Handle it asynchronously to allow scripts the opportunity to delay ready
-					return setTimeout(simpleCart.init, 1);
+					return setTimeout(evoShop.init, 1);
 				}
 
 				// Mozilla, Opera and webkit nightlies currently support this event
@@ -1899,7 +1899,7 @@
 					document.addEventListener("DOMContentLoaded", DOMContentLoaded, false);
 
 					// A fallback to window.onload, that will always work
-					window.addEventListener("load", simpleCart.init, false);
+					window.addEventListener("load", evoShop.init, false);
 
 				// If IE event model is used
 				} else if (document.attachEvent) {
@@ -1908,7 +1908,7 @@
 					document.attachEvent("onreadystatechange", DOMContentLoaded);
 
 					// A fallback to window.onload, that will always work
-					window.attachEvent("onload", simpleCart.init);
+					window.attachEvent("onload", evoShop.init);
 
 					// If IE and not a frame
 					// continually check to see if the document is ready
@@ -1927,11 +1927,11 @@
 			// bind the ready event
 			sc_BindReady();
 
-			return simpleCart;
+			return evoShop;
 		};
 
 
-	window.simpleCart = generateSimpleCart();
+	window.evoShop = generateevoShop();
 
 }(window, document));
 
