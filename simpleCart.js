@@ -70,6 +70,7 @@
 					"DKK": { code: "DKK", symbol: "DKK&nbsp;", name: "Danish Krone" },
 					"EUR": { code: "EUR", symbol: "&euro;", name: "Euro" },
 					"HKD": { code: "HKD", symbol: "&#36;", name: "Hong Kong Dollar" },
+					"HRK": { code: "HRK", symbol: "&nbsp;kn", name: "Croatian kuna", accuracy: 2, decimal: ",", delimiter: "", after: true },
 					"HUF": { code: "HUF", symbol: "&#70;&#116;", name: "Hungarian Forint" },
 					"ILS": { code: "ILS", symbol: "&#8362;", name: "Israeli New Sheqel" },
 					"JPY": { code: "JPY", symbol: "&yen;", name: "Japanese Yen", accuracy: 0 },
@@ -82,7 +83,9 @@
 					"SEK": { code: "SEK", symbol: "SEK&nbsp;", name: "Swedish Krona" },
 					"CHF": { code: "CHF", symbol: "CHF&nbsp;", name: "Swiss Franc" },
 					"THB": { code: "THB", symbol: "&#3647;", name: "Thai Baht" },
-					"BTC": { code: "BTC", symbol: " BTC", name: "Bitcoin", accuracy: 4, after: true	}
+					"BTC": { code: "BTC", symbol: " BTC", name: "Bitcoin", accuracy: 4, after: true	},
+					"RUB": { code: "RUB", symbol: "&nbsp;р.", name: "Russian Rouble", accuracy: 2, decimal: ",", delimiter: "", after: true },
+					"UAH": { code: "UAH", symbol: "&nbsp;грн.", name: "Ukrainian Hryvnia", accuracy: 2, decimal: ",", delimiter: "", after: true }
 				},
 
 				// default options
