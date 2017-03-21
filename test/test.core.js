@@ -1,7 +1,7 @@
 
 if( !QUnit.urlParams.storage ){
-	simpleCart.empty();
-	simpleCart.add({
+	evoShop.empty();
+	evoShop.add({
 		name: "Cool T-shirt",
 		price: 25,
 		thumb: "http://www.google.com/intl/en_com/images/srpr/logo3w.png"
@@ -11,58 +11,58 @@ if( !QUnit.urlParams.storage ){
 }
 
 
-module('simpleCart-storage');
+module('evoShop-storage');
 test("proper loading after page refesh", function(){
 
-	var item = simpleCart.find({})[0];
+	var item = evoShop.find({})[0];
 	
 	same( item.quantity() , 1 , "item quantity loaded properly" );
 	same( item.get('name') , "Cool T-shirt" , "item name loaded properly" );
 	same( item.price() , 25 , "item price loaded properly" );
-	same( simpleCart.quantity() , 1 , "sc quantity loaded properly" );
-	same( simpleCart.total() , 25 , "sc total loaded properly" );
+	same( evoShop.quantity() , 1 , "sc quantity loaded properly" );
+	same( evoShop.total() , 25 , "sc total loaded properly" );
 	same( item.get("thumb") , "http://www.google.com/intl/en_com/images/srpr/logo3w.png" , "storage non-regular option works" );
 	
 	
 });
 
 
-test("simpleCart handles corrupt storage", function(){
+test("evoShop handles corrupt storage", function(){
 
 	// like a stick in the spokes of a 10 speed
-	localStorage.setItem( "simpleCart_items" , "%%%%%%%%" );
+	localStorage.setItem( "evoShop_items" , "%%%%%%%%" );
 	
-	simpleCart.load();
+	evoShop.load();
 	
 	
 });
 
 
-module('simpleCart core functions');
+module('evoShop core functions');
 test("adding and removing items", function(){
 	
-	simpleCart.empty();
+	evoShop.empty();
 	
-	same( simpleCart.quantity() , 0 , "Quantity correct after one item added" );
+	same( evoShop.quantity() , 0 , "Quantity correct after one item added" );
 	
-	var item = simpleCart.add({
+	var item = evoShop.add({
 		name: "Cool T-shirt",
 		price: 25
 	});
 	
-	same( simpleCart.quantity() , 1 , "Quantity correct after one item added" );
-	same( simpleCart.total() , 25 , "Total correct after one item added" );
+	same( evoShop.quantity() , 1 , "Quantity correct after one item added" );
+	same( evoShop.total() , 25 , "Total correct after one item added" );
 	same( item.get( 'price' ) , 25 , "Price is correctly saved" );
 	same( item.get( 'name' ) , "Cool T-shirt", "Name is correctly saved" );
 	
 	
-	var item2 = simpleCart.add({
+	var item2 = evoShop.add({
 		name: "Really Cool T-shirt",
 		price: "25.99"
 	});
 	
 	
-	var items = simpleCart.find();
+	var items = evoShop.find();
 	
 	same( items.length , 2 , "new items being recognized");
 	ok( item2.equals( item2 ), "same items are .equal" );
@@ -70,7 +70,7 @@ test("adding and removing items", function(){
 	
 	same( item2.price() , 25.99 , "Price as string works");
 	
-	var item3 = simpleCart.add({
+	var item3 = evoShop.add({
 		name: "Reeeeeally Cool Sweatshirt",
 		UUID: "xxxfdajfdsf823jf92j9fj9f23",
 		price: "$36"
@@ -79,23 +79,23 @@ test("adding and removing items", function(){
 	same( item3.price() , 36 , "Price with dollar sign in front is parsed correctly");
 	
 	
-	simpleCart.empty();
+	evoShop.empty();
 	
-	var item4 = simpleCart.add({
+	var item4 = evoShop.add({
 		name: "RaceCar",
 		quantity: 1.4342
 	});
 	
 	same( item4.quantity() , 1 , "Item quantity parsed as INT and not decimal");
-	same( simpleCart.quantity(), 1 , "SimpleCart quantity parsed as INT and not decimal");
+	same( evoShop.quantity(), 1 , "evoShop quantity parsed as INT and not decimal");
 	
 });
 
 test("editing items", function(){	
 	
-	simpleCart.empty();
+	evoShop.empty();
 	
-	var item = simpleCart.add({
+	var item = evoShop.add({
 		name: "Cool T-shirt",
 		price: 25
 	});
@@ -112,9 +112,9 @@ test("editing items", function(){
 	
 	item.increment();
 	
-	same( simpleCart.quantity() , 3 , "Quantity is two after item incremented");
+	same( evoShop.quantity() , 3 , "Quantity is two after item incremented");
 	same( item.quantity() , 3 , "Item quantity incremented to 2" );
-	same( simpleCart.total() , 75 , "Total increased properly after incremented item");
+	same( evoShop.total() , 75 , "Total increased properly after incremented item");
 	
 	item.increment( 5 );
 	
@@ -122,47 +122,47 @@ test("editing items", function(){
 	
 	item.remove();
 	
-	same( simpleCart.quantity() , 0 , "Quantity correct after item removed" );
-	same( simpleCart.total() , 0 , "Total correct after item removed" );
+	same( evoShop.quantity() , 0 , "Quantity correct after item removed" );
+	same( evoShop.total() , 0 , "Total correct after item removed" );
 	
 });
 
 
-	test("simpleCart.chunk() function works", function(){
+	test("evoShop.chunk() function works", function(){
 		
 		var str = "11111" + "11111" + "11111" + "11111" + "11111",
 			array = [ "11111" , "11111" , "11111" , "11111" , "11111" ];
-			test = simpleCart.chunk( str , 5 );
+			test = evoShop.chunk( str , 5 );
 			
 		same( test , array , "chunked array properly into 5 piece chunks");
 		
 	});
 	
-	test("simpleCart.toCurrency() function works", function(){
+	test("evoShop.toCurrency() function works", function(){
 		
 		var number = 2234.23;
 		
-		same( simpleCart.toCurrency( number ), "&#36;2,234.23" , "Currency Base Case");
+		same( evoShop.toCurrency( number ), "&#36;2,234.23" , "Currency Base Case");
 		
-		same( simpleCart.toCurrency( number , { delimiter: " " }) ,"&#36;2 234.23" ,  "Changing Delimiter");
+		same( evoShop.toCurrency( number , { delimiter: " " }) ,"&#36;2 234.23" ,  "Changing Delimiter");
 		
-		same( simpleCart.toCurrency( number , { delimiter: "&thinsp;" }) ,"&#36;2&thinsp;234.23" ,  "Multi Character Delimiter");
+		same( evoShop.toCurrency( number , { delimiter: "&thinsp;" }) ,"&#36;2&thinsp;234.23" ,  "Multi Character Delimiter");
 
-		same( simpleCart.toCurrency( number , { decimal: ","  }) ,  "&#36;2,234,23" , "Changing decimal delimiter");
+		same( evoShop.toCurrency( number , { decimal: ","  }) ,  "&#36;2,234,23" , "Changing decimal delimiter");
 
-		same(  simpleCart.toCurrency( number , { symbol: "!"  }) , "!2,234.23" , "Changing currency symbol");
+		same(  evoShop.toCurrency( number , { symbol: "!"  }) , "!2,234.23" , "Changing currency symbol");
 		
-		same( simpleCart.toCurrency( number , { accuracy: 1  }) , "&#36;2,234.2" ,  "Changing decimal accuracy");
+		same( evoShop.toCurrency( number , { accuracy: 1  }) , "&#36;2,234.2" ,  "Changing decimal accuracy");
 		
-		same( simpleCart.toCurrency( number , { after: true  }) ,  "2,234.23&#36;" , "Changing symbol location");
+		same( evoShop.toCurrency( number , { after: true  }) ,  "2,234.23&#36;" , "Changing symbol location");
 		
-		same( simpleCart.toCurrency( number , { symbol: "", accuracy:0, delimiter:"" }) , "2234", "Long hand toInt string" );
+		same( evoShop.toCurrency( number , { symbol: "", accuracy:0, delimiter:"" }) , "2234", "Long hand toInt string" );
 		
 		
 	});
 	
 	
-	test("simpleCart.each() function works", function(){
+	test("evoShop.each() function works", function(){
 		
 		Object.prototype.extra = function(){};
 		Array.prototype.awesome = function(){};
@@ -172,7 +172,7 @@ test("editing items", function(){
 		
 		function test_object_prototype(){
 			var test = true;
-			simpleCart.each( myObject , function(val,x,name){
+			evoShop.each( myObject , function(val,x,name){
 				if( name === "extra" ){
 					test = false;
 				}
@@ -182,7 +182,7 @@ test("editing items", function(){
 		
 		function test_array_prototype(){
 			var test = true;
-			simpleCart.each( myArray , function(val,x){
+			evoShop.each( myArray , function(val,x){
 				if( x === 4 ){
 					test = false;
 				}
@@ -192,7 +192,7 @@ test("editing items", function(){
 		
 		function output_members(){
 			var ms = "";
-			simpleCart.each( myObject , function(val,x,name){
+			evoShop.each( myObject , function(val,x,name){
 				ms += name;
 			});
 			return ms;
@@ -206,8 +206,8 @@ test("editing items", function(){
 	
 	});
 	
-	asyncTest("simpleCart.ready() works", function(){
-		simpleCart.ready(function(){
+	asyncTest("evoShop.ready() works", function(){
+		evoShop.ready(function(){
 			ok(true);
 			start();
 		});
@@ -215,9 +215,9 @@ test("editing items", function(){
 	
 	
 
-	test("simpleCart.copy() function works", function(){
+	test("evoShop.copy() function works", function(){
 			
-		var sc_demo = simpleCart.copy('sc_demo');
+		var sc_demo = evoShop.copy('sc_demo');
 		sc_demo.add({ name:"bob",price:34,size:"big"});
 		
 	});
@@ -231,36 +231,36 @@ test("editing items", function(){
 	test("Event return values work", function(){
 		
 	
-		simpleCart.empty();
+		evoShop.empty();
 		
-		simpleCart.bind( 'beforeAdd' , function( item ){
+		evoShop.bind( 'beforeAdd' , function( item ){
 			if( item.get( 'special_value') === 'do not add' ){
 				return false;
 			}
 		});
 		
 		
-		simpleCart.add({ name: "neat thing" , price: 4 , special_value: 'do not add' });
-		same( simpleCart.quantity() , 0 , "Returning false on 'beforeAdd' event prevents item from being added to the cart");
+		evoShop.add({ name: "neat thing" , price: 4 , special_value: 'do not add' });
+		same( evoShop.quantity() , 0 , "Returning false on 'beforeAdd' event prevents item from being added to the cart");
 		
 		
-		simpleCart.empty();
+		evoShop.empty();
 		
-		simpleCart.bind( 'beforeRemove' , function( item ){
+		evoShop.bind( 'beforeRemove' , function( item ){
 			if( item.get( 'special_value' ) === 'do not remove' ){
 				return false;
 			}
 		});
 		
-		var item = simpleCart.add({ name: "thing" , price: 3 , special_value: "do not remove" });
+		var item = evoShop.add({ name: "thing" , price: 3 , special_value: "do not remove" });
 		
 		item.remove();
 		
-		same( simpleCart.quantity() , 1 , "Returning false on 'beforeRemove' event prevents item from being removed.");
+		same( evoShop.quantity() , 1 , "Returning false on 'beforeRemove' event prevents item from being removed.");
 		
-		simpleCart.empty();
+		evoShop.empty();
 		
-		same( simpleCart.quantity() , 1 , "Empty does not clear when beforeRemove prevents items from being removed");
+		same( evoShop.quantity() , 1 , "Empty does not clear when beforeRemove prevents items from being removed");
 		
 		item.set("special_value" , "hullo");
 		
@@ -269,22 +269,22 @@ test("editing items", function(){
 	
 	test("Add item on load is quiet", function(){
 	
-		simpleCart.empty();
+		evoShop.empty();
 		
 		var beforeadd_not_called = true,
 			afteradd_not_called = true;
 			
-		simpleCart.add({name:'yo', price:1});
+		evoShop.add({name:'yo', price:1});
 		
-		simpleCart.bind( 'beforeAdd' , function( item ){
+		evoShop.bind( 'beforeAdd' , function( item ){
 			beforeadd_not_called = false;
 		});
 		
-		simpleCart.bind( 'afterAdd' , function( item ){
+		evoShop.bind( 'afterAdd' , function( item ){
 			afteradd_not_called = false;
 		});
 				
-		simpleCart.load();
+		evoShop.load();
 	
 		ok( beforeadd_not_called , "beforeAdd event is not called on load" );
 		ok( afteradd_not_called , "afterAdd event is not called on load" );
@@ -295,13 +295,13 @@ test("editing items", function(){
 	test(".on works", function(){
 		
 		
-		simpleCart.empty();
+		evoShop.empty();
 		var on_before_add_called = false;
-		simpleCart.on( 'beforeAdd', function(){
+		evoShop.on( 'beforeAdd', function(){
 			on_before_add_called = true;
 		});
 		
-		simpleCart.add({ name: "thing" , price: 4 });
+		evoShop.add({ name: "thing" , price: 4 });
 		
 		ok( on_before_add_called , ".on() alias for .bind() works");
 		
@@ -309,19 +309,19 @@ test("editing items", function(){
 	
 	test("bind multiple events at once", function(){
 		
-		simpleCart.empty();
+		evoShop.empty();
 		var callback_called_count = 0,
 			multispace_callback_called_count = 0;
 			
-		simpleCart.on( 'beforeAdd afterAdd', function(){
+		evoShop.on( 'beforeAdd afterAdd', function(){
 			callback_called_count++;
 		});
 		
-		simpleCart.on( 'beforeAdd   afterAdd', function(){
+		evoShop.on( 'beforeAdd   afterAdd', function(){
 			multispace_callback_called_count++;
 		});
 		
-		simpleCart.add({ name: "thing" , price: 4 });
+		evoShop.add({ name: "thing" , price: 4 });
 		
 		same( callback_called_count, 2 , "binding to space seperated list of event names works");
 		same( multispace_callback_called_count, 2 , "binding to space seperated list (w/ several spaces) of event names works");
@@ -331,34 +331,34 @@ test("editing items", function(){
 	module('tax and shipping');
 	test("shipping works", function(){
 			
-		simpleCart.empty();
-		simpleCart({
+		evoShop.empty();
+		evoShop({
 			taxRate: 0.06 ,
 			shippingFlatRate: 20
 		});
 		
-		simpleCart.add({name: "bob" , price: 2 });
+		evoShop.add({name: "bob" , price: 2 });
 		
-		same( simpleCart.taxRate() , 0.06 , "Tax Rate saved properly");
-		same( simpleCart.tax() , 0.06*2 , "Tax Cost Calculated properly");
-		same( simpleCart.shipping() , 20 , "Flat Rate shipping works");
+		same( evoShop.taxRate() , 0.06 , "Tax Rate saved properly");
+		same( evoShop.tax() , 0.06*2 , "Tax Cost Calculated properly");
+		same( evoShop.shipping() , 20 , "Flat Rate shipping works");
 		
 		
-		simpleCart({
+		evoShop({
 			shippingQuantityRate: 3
 		});
 		
-		same( simpleCart.shipping() , 20 + 1*3 , "Shipping Quantity Rate works");
+		same( evoShop.shipping() , 20 + 1*3 , "Shipping Quantity Rate works");
 		
-		simpleCart({
+		evoShop({
 			shippingTotalRate: 0.1
 		});
 		
 		
-		same( simpleCart.shipping() , 20 + 1*3 + 0.1*2 , "Shipping Quantity Rate works");
+		same( evoShop.shipping() , 20 + 1*3 + 0.1*2 , "Shipping Quantity Rate works");
 		
 		
-		simpleCart({
+		evoShop({
 			shippingFlatRate: 0 ,
 			shippingQuantityRate: 0 ,
 			shippingTotalRate: 0 ,
@@ -368,13 +368,13 @@ test("editing items", function(){
 			}
 		});
 		
-		simpleCart.empty();
-		same( simpleCart.shipping() ,  45 , "Custom Shipping works");
+		evoShop.empty();
+		same( evoShop.shipping() ,  45 , "Custom Shipping works");
 		
-		simpleCart.add({name:"cool",price:1,shipping:45});
-		same( simpleCart.shipping() ,  90 , "item shipping field works");
+		evoShop.add({name:"cool",price:1,shipping:45});
+		same( evoShop.shipping() ,  90 , "item shipping field works");
 		
-		simpleCart.Item._.shipping = function(){
+		evoShop.Item._.shipping = function(){
 			if( this.get('name') === 'cool'){
 				return 5;
 			} else {
@@ -382,28 +382,28 @@ test("editing items", function(){
 			}
 		};
 		
-		simpleCart.empty();
-		simpleCart.add({name:'cool',price:2});
-		simpleCart.add({name:'bob',price:3});
-		simpleCart.add({name:'weird',price:3});
-		simpleCart({
+		evoShop.empty();
+		evoShop.add({name:'cool',price:2});
+		evoShop.add({name:'bob',price:3});
+		evoShop.add({name:'weird',price:3});
+		evoShop({
 			shippingCustom: null
 		});
-		same( simpleCart.shipping() ,  7 , "Item shipping prototype function works");
+		same( evoShop.shipping() ,  7 , "Item shipping prototype function works");
 	});
 	test("tax works", function(){
 		
-		simpleCart.empty();
-		simpleCart({
+		evoShop.empty();
+		evoShop({
 			taxRate: 0.06 
 		});
 
-		simpleCart.add({name: "bob" , price: 2 });
+		evoShop.add({name: "bob" , price: 2 });
 
-		same( simpleCart.taxRate() , 0.06 , "Tax Rate saved properly");
-		same( simpleCart.tax() , 0.06*2 , "Tax Cost Calculated properly");
+		same( evoShop.taxRate() , 0.06 , "Tax Rate saved properly");
+		same( evoShop.tax() , 0.06*2 , "Tax Cost Calculated properly");
 		
-		simpleCart({
+		evoShop({
 			shippingFlatRate: 0 ,
 			shippingQuantityRate: 0 ,
 			shippingTotalRate: 0 ,
@@ -413,60 +413,60 @@ test("editing items", function(){
 			taxShipping: true
 		});
 		
-		same( simpleCart.tax() , 0.06*(simpleCart.shipping()+simpleCart.total()) , "taxShipping works correctly" );
+		same( evoShop.tax() , 0.06*(evoShop.shipping()+evoShop.total()) , "taxShipping works correctly" );
 		
-		simpleCart({
+		evoShop({
 			taxShipping: false
 		});
 		
 		
-		simpleCart({
+		evoShop({
 			taxRate: 0 
 		});
-		simpleCart.empty();
-		simpleCart.add({name:"cool",price:2,taxRate:0.05});
-		same( simpleCart.tax() ,  2*0.05 , "Individual item tax rate works");
+		evoShop.empty();
+		evoShop.add({name:"cool",price:2,taxRate:0.05});
+		same( evoShop.tax() ,  2*0.05 , "Individual item tax rate works");
 		
 		
-		simpleCart.empty();
-		simpleCart.add({name:"cool",price:2,tax:1});
-		same( simpleCart.tax() ,  1 , "Individual item tax cost works");
+		evoShop.empty();
+		evoShop.add({name:"cool",price:2,tax:1});
+		same( evoShop.tax() ,  1 , "Individual item tax cost works");
 		
-		simpleCart.empty();
-		simpleCart.add({name:"cool",price:2,tax:function(){
+		evoShop.empty();
+		evoShop.add({name:"cool",price:2,tax:function(){
 			return this.price()*0.1;
 		}});
-		same( simpleCart.tax() , 0.2, "individual tax cost function works");
+		same( evoShop.tax() , 0.2, "individual tax cost function works");
 		
-		simpleCart.empty();
+		evoShop.empty();
 		
 	});
 	
 	
 	test("tax and shipping send to paypal", function(){
 		
-		simpleCart({
+		evoShop({
 			taxRate: 0.5
 		});
 		
-		simpleCart.shipping(function(){
+		evoShop.shipping(function(){
 			return 5.55555;
 		});
 		
-		simpleCart.empty();
-		simpleCart.add({
+		evoShop.empty();
+		evoShop.add({
 			name: "cool thing with weird price",
 			price: 111.1111111111
 		});
 		
-		simpleCart({
+		evoShop({
 			checkout: {
 				type: "PayPal",
 				email: "you@yours.com"
 			}
 		});
 		
-		simpleCart.bind( "beforeCheckout" , function(data){
+		evoShop.bind( "beforeCheckout" , function(data){
 			
 			same( data.amount_1 , ( data.amount_1*1).toFixed(2) , "Item price is correctly formatted before going to paypal");	
 			same( data.tax_cart ,  ( data.tax_cart*1 ).toFixed(2) , "Tax is correctly formated before going to paypal");
@@ -476,31 +476,31 @@ test("editing items", function(){
 		});
 		
 		
-		simpleCart.checkout();
+		evoShop.checkout();
 		
 	});
 	
 	
-	module('simpleCart.find');
-	test("simpleCart.find() function works", function(){
+	module('evoShop.find');
+	test("evoShop.find() function works", function(){
 			
-		simpleCart.empty();
-		var bob = simpleCart.add({name: "bob" , price: 2 , color:'blue' , size: 6 }),
-			joe = simpleCart.add({name: "joe" , price: 3 , color:'orange' , size: 3 }),
-			jeff = simpleCart.add({name: "jeff" , price: 4 , color:'blue' , size: 4 }),
-			bill = simpleCart.add({name: "bill" , price: 5 , color:'red' , size: 5 }),
+		evoShop.empty();
+		var bob = evoShop.add({name: "bob" , price: 2 , color:'blue' , size: 6 }),
+			joe = evoShop.add({name: "joe" , price: 3 , color:'orange' , size: 3 }),
+			jeff = evoShop.add({name: "jeff" , price: 4 , color:'blue' , size: 4 }),
+			bill = evoShop.add({name: "bill" , price: 5 , color:'red' , size: 5 }),
 		
-		 	orange_items = simpleCart.find({ color: 'orange' }),
-			expensive = simpleCart.find({ price: '>=4' }),
-			small = simpleCart.find({ size: '<5' }),
-			bob_search = simpleCart.find({ name: "bob" }),
-			blue_and_big = simpleCart.find({ color: 'blue', size: '>4' });
+		 	orange_items = evoShop.find({ color: 'orange' }),
+			expensive = evoShop.find({ price: '>=4' }),
+			small = evoShop.find({ size: '<5' }),
+			bob_search = evoShop.find({ name: "bob" }),
+			blue_and_big = evoShop.find({ color: 'blue', size: '>4' });
 			
-			
-		
 			
 		
-		same( simpleCart.find(bob.id()).id() , bob.id() , "Searching with id works");
+			
+		
+		same( evoShop.find(bob.id()).id() , bob.id() , "Searching with id works");
 		same( orange_items[0].id() , joe.id() , "Searching with string = val works");
 		same( expensive[0].id() , jeff.id(), "Searching >= works");
 		same( small[0].id() , joe.id(), "Searching < works");
@@ -511,28 +511,28 @@ test("editing items", function(){
 	
 	test("basic outlets work", function(){
 	
-		var item = simpleCart.add({
+		var item = evoShop.add({
 			name: "Cool T-shirt",
 			price: 25
 		});
 
-		document.getElementById('test_id').innerHTML = simpleCart.quantity();
-		same( document.getElementById('simpleCart_quantity').innerHTML , document.getElementById('test_id').innerHTML , "quantity outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.quantity();
+		same( document.getElementById('evoShop_quantity').innerHTML , document.getElementById('test_id').innerHTML , "quantity outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.total() );
-		same( document.getElementById('simpleCart_total').innerHTML , document.getElementById('test_id').innerHTML, "total outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.total() );
+		same( document.getElementById('evoShop_total').innerHTML , document.getElementById('test_id').innerHTML, "total outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.taxRate().toFixed();
-		same( document.getElementById('simpleCart_taxRate').innerHTML , document.getElementById('test_id').innerHTML , "taxRate outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.taxRate().toFixed();
+		same( document.getElementById('evoShop_taxRate').innerHTML , document.getElementById('test_id').innerHTML , "taxRate outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.tax() );
-		same( document.getElementById('simpleCart_tax').innerHTML , document.getElementById('test_id').innerHTML , "tax outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.tax() );
+		same( document.getElementById('evoShop_tax').innerHTML , document.getElementById('test_id').innerHTML , "tax outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.shipping() );
-		same( document.getElementById('simpleCart_shipping').innerHTML , document.getElementById('test_id').innerHTML , "shipping outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.shipping() );
+		same( document.getElementById('evoShop_shipping').innerHTML , document.getElementById('test_id').innerHTML , "shipping outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.grandTotal() );
-		same( document.getElementById('simpleCart_grandTotal').innerHTML , document.getElementById('test_id').innerHTML , "grand total outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.grandTotal() );
+		same( document.getElementById('evoShop_grandTotal').innerHTML , document.getElementById('test_id').innerHTML , "grand total outlet works" );
 		
 		
 		
@@ -540,28 +540,28 @@ test("editing items", function(){
 	
 	test("basic outlets work", function(){
 	
-		var item = simpleCart.add({
+		var item = evoShop.add({
 			name: "Cool T-shirt",
 			price: 25
 		});
 
-		document.getElementById('test_id').innerHTML = simpleCart.quantity();
-		same( document.getElementById('simpleCart_quantity').innerHTML , document.getElementById('test_id').innerHTML , "quantity outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.quantity();
+		same( document.getElementById('evoShop_quantity').innerHTML , document.getElementById('test_id').innerHTML , "quantity outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.total() );
-		same( document.getElementById('simpleCart_total').innerHTML , document.getElementById('test_id').innerHTML, "total outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.total() );
+		same( document.getElementById('evoShop_total').innerHTML , document.getElementById('test_id').innerHTML, "total outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.taxRate().toFixed();
-		same( document.getElementById('simpleCart_taxRate').innerHTML , document.getElementById('test_id').innerHTML , "taxRate outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.taxRate().toFixed();
+		same( document.getElementById('evoShop_taxRate').innerHTML , document.getElementById('test_id').innerHTML , "taxRate outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.tax() );
-		same( document.getElementById('simpleCart_tax').innerHTML , document.getElementById('test_id').innerHTML , "tax outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.tax() );
+		same( document.getElementById('evoShop_tax').innerHTML , document.getElementById('test_id').innerHTML , "tax outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.shipping() );
-		same( document.getElementById('simpleCart_shipping').innerHTML , document.getElementById('test_id').innerHTML , "shipping outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.shipping() );
+		same( document.getElementById('evoShop_shipping').innerHTML , document.getElementById('test_id').innerHTML , "shipping outlet works" );
 		
-		document.getElementById('test_id').innerHTML = simpleCart.toCurrency( simpleCart.grandTotal() );
-		same( document.getElementById('simpleCart_grandTotal').innerHTML , document.getElementById('test_id').innerHTML , "grand total outlet works" );
+		document.getElementById('test_id').innerHTML = evoShop.toCurrency( evoShop.grandTotal() );
+		same( document.getElementById('evoShop_grandTotal').innerHTML , document.getElementById('test_id').innerHTML , "grand total outlet works" );
 				
 	});
 	
@@ -569,8 +569,8 @@ test("editing items", function(){
 
 	
 // just incase we refresh ;)
-	simpleCart.empty();
-	simpleCart.add({
+	evoShop.empty();
+	evoShop.add({
 		name: "Cool T-shirt",
 		price: 25,
 		thumb: "http://www.google.com/intl/en_com/images/srpr/logo3w.png"

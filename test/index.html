@@ -1,11 +1,11 @@
 <!DOCTYPE html>  
 <html>  
 <head>  
-    <title>simpleCart(js) - QUnit Test Suite</title>  
+    <title>evoShop(js) - QUnit Test Suite</title>  
     <link rel="stylesheet" href="css/qunit.css" type="text/css" media="screen">  
 
 	<script>/*<![CDATA[*/!window.QUnit && document.write('<script src="inc/qunit.js"><\/script>')/*]]>*/</script>
-	<script src="http://swarm.simplecartjs.com/js/inject.js"></script>
+	<script src="http://swarm.evoShopjs.com/js/inject.js"></script>
 	
     <!-- Your project file goes here -->  
 	<script>/*<![CDATA[*/
@@ -20,10 +20,10 @@
 	}
 	
 	if( QUnit.urlParams.commit ){
-		document.write('<script src="inc/get-raw-javascript.php?file=https://raw.github.com/wojodesign/simplecart-js/'+ QUnit.urlParams.commit +'/simpleCart.js"><\/script>');
-		document.write('<script src="inc/get-raw-javascript.php?file=https://raw.github.com/wojodesign/simplecart-js/'+ QUnit.urlParams.commit +'/test/test.core.js"><\/script>');
+		document.write('<script src="inc/get-raw-javascript.php?file=https://raw.github.com/wojodesign/evoShop-js/'+ QUnit.urlParams.commit +'/evoShop.js"><\/script>');
+		document.write('<script src="inc/get-raw-javascript.php?file=https://raw.github.com/wojodesign/evoShop-js/'+ QUnit.urlParams.commit +'/test/test.core.js"><\/script>');
 	} else {
-		document.write('<script src="../simpleCart.js"><\/script>');
+		document.write('<script src="../evoShop.js"><\/script>');
 		document.write('<script type="text/javascript" src="test.core.js"><\/script>');
 	}
 	/*]]>*/</script>
@@ -69,15 +69,15 @@
     <ol id="qunit-tests"></ol>
 	
 	<p>
-	Cart: <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)
+	Cart: <span class="evoShop_total"></span> (<span id="evoShop_quantity" class="evoShop_quantity"></span> items)
 	<br />
-	<a href="javascript:;" class="simpleCart_empty">empty cart</a>
+	<a href="javascript:;" class="evoShop_empty">empty cart</a>
 	<br />
 	</p>
 
 
 	<ul>
-		<li class="simpleCart_shelfItem">
+		<li class="evoShop_shelfItem">
 			<h2 class="item_name">Zebra</h2>
 			<img class="item_thumb" src="e.png" />
 			<span class="item_price">$187.95</span>
@@ -97,7 +97,7 @@
 		</li>
 
 
-		<li class="simpleCart_shelfItem">
+		<li class="evoShop_shelfItem">
 			<h2 class="item_name">Cow</h2>
 			<img class="item_thumb" src="e.png" />
 			<span class="item_price">$18.00</span>
@@ -115,7 +115,7 @@
 		<li>
 			<h2>Baby Lion</h2>
 			<div>$34.95</div>
-			<a href="javascript:;" onclick="simpleCart.add({name:'baby lion', price: 34.95,size:'tiny',thumb:'e.png'});" >add to cart</a>
+			<a href="javascript:;" onclick="evoShop.add({name:'baby lion', price: 34.95,size:'tiny',thumb:'e.png'});" >add to cart</a>
 		</li>
 		
 		<li>
@@ -126,7 +126,7 @@
 
 	</ul>
 
-	<div class="simpleCart_items" >
+	<div class="evoShop_items" >
 	</div>
 
 
@@ -134,14 +134,14 @@
 	</div>
 
 	<br />
-	SubTotal: <span id="simpleCart_total" class="simpleCart_total"></span> <br />
-	Tax Rate: <span id="simpleCart_taxRate" class="simpleCart_taxRate"></span> <br />
-	Tax: <span id="simpleCart_tax" class="simpleCart_tax"></span> <br />
-	Shipping: <span id="simpleCart_shipping" class="simpleCart_shipping"></span> <br />
+	SubTotal: <span id="evoShop_total" class="evoShop_total"></span> <br />
+	Tax Rate: <span id="evoShop_taxRate" class="evoShop_taxRate"></span> <br />
+	Tax: <span id="evoShop_tax" class="evoShop_tax"></span> <br />
+	Shipping: <span id="evoShop_shipping" class="evoShop_shipping"></span> <br />
 	-----------------------------<br />
-	Final Total: <span id="simpleCart_grandTotal" class="simpleCart_grandTotal"></span> <br />
+	Final Total: <span id="evoShop_grandTotal" class="evoShop_grandTotal"></span> <br />
 
-	<a href="javascript:;" class="simpleCart_checkout">checkout</a>	
+	<a href="javascript:;" class="evoShop_checkout">checkout</a>	
 	
 	<div id="test_id"></div>
     

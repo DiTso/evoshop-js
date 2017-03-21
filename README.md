@@ -9,16 +9,13 @@ Copyright (c) 2012 Brett Wejrowski
 Dual licensed under the MIT or GPL licenses.
 
 
-##This is version 3
+##This is version 4
 
 If you would like to use an older version, you can use a different branch or see them in the 
 downloads area
 
-v3.0.5 changelog
- - moved beforeCheckout event and form sending inside of .checkout() to keep dry
- - added price, shipping, tax formatting for paypal checkout
- - added .submit method to ELEMENT 
- - fixed mootools .get and .live bugs
+v4.0.0 changelog
+
 
 
 ## Quick Start
@@ -224,5 +221,5 @@ will have a link that increments the quantity. Setting the `label:false` will hi
 You can add `view: "currency"` to format the column as currency (see the currency section on more information on currency formatting). 
 
 
-**For more information, please go to evoShopjs.com**								  
+**For more information, please go to evoShop.pro**								  
 		
