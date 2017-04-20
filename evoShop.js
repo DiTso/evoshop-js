@@ -1678,7 +1678,7 @@
 						return this.passthrough(_CLICK_, callback);
 					},
 					live: function (event, callback) {
-						$engine(document).delegate(this.selector, event, callback);
+						$engine(document).on(event, this.selector, callback);
 						return this;
 					},
 					parent: function () {
