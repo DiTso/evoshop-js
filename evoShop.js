@@ -354,7 +354,7 @@
 						// keep the item if the function returns false,
 						// because we know it has been prevented 
 						// from being removed
-						if (item.remove(true) === false) {
+						if (item.quietremove(true) === false) {
 							newItems[item.id()] = item
 						}
 					});
@@ -850,7 +850,14 @@
 					}
 					return null;
 				},
-
+				quietremove: function (skipUpdate) {
+				
+					delete sc_items[this.id()];
+					if (!skipUpdate) { 
+						evoShop.update();
+					}
+					return null;
+				},
 				// special fields for items
 				reservedFields: function () {
 					return ['quantity', 'id', 'item_number', 'price', 'name', 'shipping', 'tax', 'taxRate'];
