@@ -98,19 +98,25 @@
 					currency				: "USD",
 					language				: "english-us",
 
-					cartStyle				: "div",
+					//cart view
+					cartStyle				: "ul",//table, div, ul
 					cartClass				: "",
  					headerRowClass			: "headerRow",
 
 					cartColumns			: [
-						{ attr: "name", label: "Name" },
-						{ attr: "price", label: "Price", view: 'currency' },
-						{ view: "decrement", label: false },
-						{ attr: "quantity", label: "Qty" },
-						{ view: "increment", label: false },
-						{ attr: "total", label: "SubTotal", view: 'currency' },
-						{ view: "remove", text: "Remove", label: false }
+						{ attr: "rowTpl", label: false, view:'rowTpl'},
+						//{ attr: "name", label: "Name" },
+						//{ attr: "price", label: "Price", view: 'currency' },
+						//{ view: "decrement", label: false },
+						//{ attr: "quantity", label: "Qty" },
+						//{ view: "increment", label: false },
+						//{ attr: "total", label: "SubTotal", view: 'currency' },
+						//{ view: "remove", text: "Remove", label: false }
 					],
+					//new cart view
+					rowTpl : "%name% %size% %color% %price% %test% %quantity% " + "<span class='evoShop_decrement'>-</span>" + "<span class='evoShop_increment'>+</span>",
+
+
 
 					excludeFromCheckout	: ['thumb'],
 
@@ -611,6 +617,17 @@
 
 				remove: function (item, column) {
 					return "<a href='javascript:;' class='" + namespace + "_remove'>" + (column.text || "X") + "</a>";
+				},
+				rowTpl: function (item, column) {
+					var out = settings.rowTpl.replace(/%\w+%/g, function(placeholder) {
+						var val = item.get(placeholder.replace(/%/g,'')); 
+						if (val != undefined){
+							return val;
+						}else{
+							return '';
+						}
+					});
+					return out;	
 				}
 			};
 
@@ -638,13 +655,22 @@
 
 				// write out cart
 				writeCart: function (selector) {
-					var TABLE = settings.cartStyle.toLowerCase(),
-						isTable = TABLE === 'table',
-						TR = isTable ? "tr" : "div",
-						TH = isTable ? 'th' : 'div',
-						TD = isTable ? 'td' : 'div',
-						THEAD = isTable ? 'thead' : 'div',
-						cart_container = evoShop.$create(TABLE).addClass(settings.cartClass),
+					var TABLE = settings.cartStyle.toLowerCase();
+						if (TABLE === 'table') {
+							var TR = "tr",
+								TH = 'th',
+								TD = 'td',
+								THEAD = 'thead';
+						}else if (TABLE === 'ul') {
+							var TR = "li",
+								TH = 'li',
+								TD = 'span',
+								THEAD = 'ul';
+						}else{
+							var THEAD = TR = TD = TH = 'div';
+						}
+						
+					var cart_container = evoShop.$create(TABLE).addClass(settings.cartClass),
 						thead_container = evoShop.$create(THEAD),
  						header_container = evoShop.$create(TR).addClass(settings.headerRowClass),
 						container = evoShop.$(selector),
@@ -652,26 +678,28 @@
 						klass,
 						label,
 						x,
-						xlen;
+						xlen,
+						rowTpl = settings.rowTpl;
 
 					container.html(' ').append(cart_container);
 
-					cart_container.append(thead_container);
+					if (TABLE === 'table') {
+						cart_container.append(thead_container);
+						thead_container.append(header_container);
 
-					thead_container.append(header_container);
+						// create header
+						for (x = 0, xlen = settings.cartColumns.length; x < xlen; x += 1) {
+							column	= cartColumn(settings.cartColumns[x]);
+							klass	=  "item-" + (column.attr || column.view || column.label || column.text || "cell") + " " + column.className;
+							label	= column.label || "";
 
-
-					// create header
-					for (x = 0, xlen = settings.cartColumns.length; x < xlen; x += 1) {
-						column	= cartColumn(settings.cartColumns[x]);
-						klass	=  "item-" + (column.attr || column.view || column.label || column.text || "cell") + " " + column.className;
-						label	= column.label || "";
-
-						// append the header cell
-						header_container.append(
-							evoShop.$create(TH).addClass(klass).html(label)
-						);
+							// append the header cell
+							header_container.append(
+								evoShop.$create(TH).addClass(klass).html(label)
+							);
+						}
 					}
+					
 
 					// cycle through the items
 					evoShop.each(function (item, y) {
@@ -1661,9 +1689,9 @@
 					},
 					attr: function (attr, val) {
 						if (isUndefined(val)) {
-							return this.el.attr(attr);
+							return this.el.prop(attr);
 						}
-						this.el.attr(attr, val);
+						this.el.prop(attr, val);
 						return this;
 					},
 					remove: function () {
@@ -1820,6 +1848,7 @@
 										if (klass.match(/item_.+/)) {
 											attr = klass.split("_")[1];
 											val = "";
+											
 											switch($item.tag().toLowerCase()) {
 												case "input":
 												case "textarea":
