@@ -132,7 +132,7 @@
 						//{ view: "remove", text: "Remove", label: false }
 					],
 					//new cart view
-					tinyRowTpl : "%name% %color% " + "<span class='evoShop_decrement'>-</span>" + "<span class='evoShop_increment'>+</span>",
+					tinyRowTpl : "%name% %color% %quantity%" + "<span class='evoShop_decrement'>-</span>" + "<span class='evoShop_increment'>+</span>",
 
 
 
