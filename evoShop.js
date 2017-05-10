@@ -116,6 +116,24 @@
 					//new cart view
 					rowTpl : "%name% %size% %color% %price% %test% %quantity% " + "<span class='evoShop_decrement'>-</span>" + "<span class='evoShop_increment'>+</span>",
 
+					//tinycart view
+					tinyCartStyle				: "div",//table, div, ul
+					tinyCartClass				: "",
+ 					tinyHeaderRowClass			: "headerRow",
+
+					tinyCartColumns			: [
+						{ attr: "tinyRowTpl", label: false, view:'rowTpl'},
+						//{ attr: "name", label: "Name" },
+						//{ attr: "price", label: "Price", view: 'currency' },
+						//{ view: "decrement", label: false },
+						//{ attr: "quantity", label: "Qty" },
+						//{ view: "increment", label: false },
+						//{ attr: "total", label: "SubTotal", view: 'currency' },
+						//{ view: "remove", text: "Remove", label: false }
+					],
+					//new cart view
+					tinyRowTpl : "%name% %color% " + "<span class='evoShop_decrement'>-</span>" + "<span class='evoShop_increment'>+</span>",
+
 
 
 					excludeFromCheckout	: ['thumb'],
@@ -619,7 +637,9 @@
 					return "<a href='javascript:;' class='" + namespace + "_remove'>" + (column.text || "X") + "</a>";
 				},
 				rowTpl: function (item, column) {
-					var out = settings.rowTpl.replace(/%\w+%/g, function(placeholder) {
+					var tpl = column.attr;
+					//console.log (rowTpl);
+					var out = settings[tpl].replace(/%\w+%/g, function(placeholder) {
 						var val = item.get(placeholder.replace(/%/g,'')); 
 						if (val != undefined){
 							return val;
@@ -655,31 +675,36 @@
 
 				// write out cart
 				writeCart: function (selector) {
-					var TABLE = settings.cartStyle.toLowerCase();
+					if (selector == '.'+namespace+'_items'){
+						var cartStyle = settings.cartStyle,
+							cartClass = settings.cartClass,
+							headerRowClass = settings.headerRowClass,
+							cartColumns = settings.cartColumns;	
+					}else{
+						var cartStyle = settings.tinyCartStyle,
+							cartClass = settings.tinyCartClass,
+							headerRowClass = settings.tinyHeaderRowClass,
+							cartColumns = settings.tinyCartColumns;
+					}
+
+					var TABLE = cartStyle.toLowerCase();
 						if (TABLE === 'table') {
-							var TR = "tr",
-								TH = 'th',
-								TD = 'td',
-								THEAD = 'thead';
+							var TR = "tr", TH = 'th',TD = 'td',THEAD = 'thead';
 						}else if (TABLE === 'ul') {
-							var TR = "li",
-								TH = 'li',
-								TD = 'span',
-								THEAD = 'ul';
+							var TR = "li",TH = 'li',TD = 'span',THEAD = 'ul';
 						}else{
 							var THEAD = TR = TD = TH = 'div';
 						}
 						
-					var cart_container = evoShop.$create(TABLE).addClass(settings.cartClass),
+					var cart_container = evoShop.$create(TABLE).addClass(cartClass),
 						thead_container = evoShop.$create(THEAD),
- 						header_container = evoShop.$create(TR).addClass(settings.headerRowClass),
+ 						header_container = evoShop.$create(TR).addClass(headerRowClass),
 						container = evoShop.$(selector),
 						column,
 						klass,
 						label,
 						x,
-						xlen,
-						rowTpl = settings.rowTpl;
+						xlen;
 
 					container.html(' ').append(cart_container);
 
@@ -688,8 +713,8 @@
 						thead_container.append(header_container);
 
 						// create header
-						for (x = 0, xlen = settings.cartColumns.length; x < xlen; x += 1) {
-							column	= cartColumn(settings.cartColumns[x]);
+						for (x = 0, xlen = cartColumns.length; x < xlen; x += 1) {
+							column	= cartColumn(cartColumns[x]);
 							klass	=  "item-" + (column.attr || column.view || column.label || column.text || "cell") + " " + column.className;
 							label	= column.label || "";
 
@@ -703,14 +728,22 @@
 
 					// cycle through the items
 					evoShop.each(function (item, y) {
-						evoShop.createCartRow(item, y, TR, TD, cart_container);
+						evoShop.createCartRow(item, y, TR, TD, cart_container, selector);
 					});
 
 					return cart_container;
+
 				},
 
 				// generate a cart row from an item
-				createCartRow: function (item, y, TR, TD, container) {
+				createCartRow: function (item, y, TR, TD, container, selector) {
+					if (selector == '.'+namespace+'_items'){
+						cartColumns = settings.cartColumns;
+					}else{
+						cartColumns = settings.tinyCartColumns;
+					}
+
+
 					var row = evoShop.$create(TR)
 										.addClass('itemRow row-' + y + " " + (y % 2 ? "even" : "odd"))
 										.attr('id', "cartItem_" + item.id()),
@@ -724,8 +757,8 @@
 					container.append(row);
 
 					// cycle through the columns to create each cell for the item
-					for (j = 0, jlen = settings.cartColumns.length; j < jlen; j += 1) {
-						column	= cartColumn(settings.cartColumns[j]);
+					for (j = 0, jlen = cartColumns.length; j < jlen; j += 1) {
+						column	= cartColumn(cartColumns[j]);
 						klass	= "item-" + (column.attr || (isString(column.view) ? column.view : column.label || column.text || "cell")) + " " + column.className;
 						content = cartCellView(item, column);
 						cell	= evoShop.$create(TD).addClass(klass).html(content);
@@ -1755,6 +1788,9 @@
 						return evoShop.quantity();
 					}
 					, items: function (selector) {
+						evoShop.writeCart(selector);
+					}
+					, tinyitems: function (selector) {
 						evoShop.writeCart(selector);
 					}
 					, tax: function () {
