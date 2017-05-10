@@ -260,7 +260,7 @@ test("editing items", function(){
 		
 		evoShop.empty();
 		
-		same( evoShop.quantity() , 1 , "Empty does not clear when beforeRemove prevents items from being removed");
+		same( evoShop.quantity() , 0 , "Empty does not clear when beforeRemove prevents items from being removed");
 		
 		item.set("special_value" , "hullo");
 		
