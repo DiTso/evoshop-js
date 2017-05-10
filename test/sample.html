@@ -46,12 +46,17 @@
 	<br />
 	</p>
 
-	<div class="evoShop_items" >
+	<div class="evoShop_cart">
+		<h2>Корзина</h2>
+		<div class="evoShop_items" >
+		</div>
 	</div>
 
-
-	<div class="sc_demo_items" >
-	</div>
+	<div class="evoShop_smallcart">
+		<h2>Корзина с другим шаблоном</h2>
+		<div class="evoShop_tinyitems" >
+		</div>
+	</div>	
 
 	<br />
 	SubTotal: <span id="evoShop_total" class="evoShop_total"></span> <br />
@@ -70,18 +75,19 @@
 			<h2 class="item_name">Zebra</h2>
 			<img class="item_thumb" src="e.png" />
 			<span class="item_price">$187.95</span>
-			<select class="item_Size">
+			<select class="item_size">
 				<option value="Small">Small</option>
 				<option value="Medium">Medium</option>
 				<option value="Large">Large</option>	
 			</select>	
 			
-			<input type="checkbox" class="item_color" value="Blue"/><label>Blue</label>
-			<input type="checkbox" class="item_color" value="Yellow"/><label>Yellow</label>
-			<input type="checkbox" class="item_color" value="Red"/><label>Red</label>
+			<input type="radio" class="item_color" name="color" value="Blue"/><label>Blue</label>
+			<input type="radio" class="item_color" name="color" value="Yellow"/><label>Yellow</label>
+			<input type="radio" class="item_color" name="color" value="Red"/><label>Red</label>
 			
 			<input type="hidden" class="item_shipping" value="20" />	
 			<input type="hidden" class="item_quantity" value="3" />
+			<input type="hidden" class="item_test" value="test" />
 			<input type="button" class="item_add" value="add to cart" />
 		</li>
 
@@ -90,11 +96,12 @@
 			<h2 class="item_name">Cow</h2>
 			<img class="item_thumb" src="e.png" />
 			<span class="item_price">$18.00</span>
-			<select class="item_Size">
+			<select class="item_size">
 				<option value="Tiny">Tiny</option>
 				<option value="Medium">Medium</option>
 				<option value="Bull">Bull</option>	
-			</select>		
+			</select>	
+			<input type="checkbox" class="item_color" name="color" value="Blue"/><label>Синий</label>	
 			<input type="text" class="item_quantity" value="1" />
 			<input type="button" class="item_add" value="add to cart" />
 		</li>
