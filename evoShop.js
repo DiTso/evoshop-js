@@ -66,6 +66,7 @@
 
 				// Currencies
 				currencies = {
+					"NAN": { code: "NAN", symbol: "", name: "NAN" },
 					"USD": { code: "USD", symbol: "&#36;", name: "US Dollar" },
 					"AUD": { code: "AUD", symbol: "&#36;", name: "Australian Dollar" },
 					"BRL": { code: "BRL", symbol: "R&#36;", name: "Brazilian Real" },
