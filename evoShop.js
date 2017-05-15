@@ -670,6 +670,7 @@
 					//console.log (rowTpl);
 					var out = settings[tpl].replace(/%\w+%/g, function(placeholder) {
 						var val = item.get(placeholder.replace(/%/g,'')); 
+						if (placeholder.replace(/%/g,'') == 'price'){ val = evoShop.toCurrency(val || 0); }
 						if (val != undefined){
 							return val;
 						}else{
