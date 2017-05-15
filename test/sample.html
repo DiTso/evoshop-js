@@ -63,11 +63,20 @@
 	Tax Rate: <span id="evoShop_taxRate" class="evoShop_taxRate"></span> <br />
 	Tax: <span id="evoShop_tax" class="evoShop_tax"></span> <br />
 	Shipping: <span id="evoShop_shipping" class="evoShop_shipping"></span> <br />
+	Discount: <span id="evoShop_discount" class="evoShop_discount"></span> <br />
 	-----------------------------<br />
 	Final Total: <span id="evoShop_grandTotal" class="evoShop_grandTotal"></span> <br />
 
 	<a href="javascript:;" class="evoShop_checkout">checkout</a>	
 	
+
+
+	<hr>
+	<a id="addshipping">Добавить доставку 10$</a>
+	<a id="removeshipping">Удалить доставку 10$</a><br>
+	<a id="adddiscount">Добавить скидку 10$</a>
+	<a id="removediscount">Удалить скидку 10$</a>
+	<hr>
 	<div id="test_id"></div>
 
 	<ul>
@@ -85,7 +94,7 @@
 			<input type="radio" class="item_color" name="color" value="Yellow"/><label>Yellow</label>
 			<input type="radio" class="item_color" name="color" value="Red"/><label>Red</label>
 			
-			<input type="hidden" class="item_shipping" value="20" />	
+			<input type="hidden" class="item_shipping" value="0" />	
 			<input type="hidden" class="item_quantity" value="3" />
 			<input type="hidden" class="item_test" value="test" />
 			<input type="button" class="item_add" value="add to cart" />
@@ -122,6 +131,33 @@
 
 	</ul>
 
-    
+	
+    <script>
+    	//доставка
+    	evoShop.shipping(function(){
+		    return Number(localStorage.getItem('evoShop_shipping'));
+		});
+    	$('#addshipping').click(function() {
+    		localStorage.setItem('evoShop_shipping', 10);
+			evoShop.update();
+    	});
+    	$('#removeshipping').click(function() {
+    		localStorage.setItem('evoShop_shipping', 0);
+			evoShop.update();
+    	});
+
+    	//скидки
+    	evoShop.discount(function(){
+		    return Number(localStorage.getItem('evoShop_discount'));
+		});
+    	$('#adddiscount').click(function() {
+    		localStorage.setItem('evoShop_discount', 10);
+			evoShop.update();
+    	});
+    	$('#removediscount').click(function() {
+    		localStorage.setItem('evoShop_discount', 0);
+			evoShop.update();
+    	});
+    </script>
 </body>  
 </html>
