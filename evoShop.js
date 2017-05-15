@@ -144,8 +144,12 @@
 					shippingTotalRate		: 0,
 					shippingCustom		: null,
 
+					discountFlatRate		: 0,
+					discountQuantityRate	: 0,
+					discountTotalRate		: 0,
+					discountCustom		: null,
+
 					taxRate				: 0,
-					
 					taxShipping			: false,
 
 					data				: {}
@@ -406,7 +410,7 @@
 				},
 
 				grandTotal: function () {
-					return evoShop.total() + evoShop.tax() + evoShop.shipping();
+					return evoShop.total() + evoShop.tax() + evoShop.shipping() - evoShop.discount();
 				},
 
 
@@ -594,6 +598,30 @@
 
 					evoShop.each(function (item) {
 						cost += parseFloat(item.get('shipping') || 0);
+					});
+					return parseFloat(cost);
+				}, 
+
+				discount: function (opt_custom_function) {
+
+					// shortcut to extend options with custom discount
+					if (isFunction(opt_custom_function)) {
+						evoShop({
+							discountCustom: opt_custom_function
+						});
+						return;
+					}
+
+					var cost = settings.discountQuantityRate * evoShop.quantity() +
+							settings.discountTotalRate * evoShop.total() +
+							settings.discountFlatRate;
+
+					if (isFunction(settings.discountCustom)) {
+						cost += settings.discountCustom.call(evoShop);
+					}
+
+					evoShop.each(function (item) {
+						cost += parseFloat(item.get('discount') || 0);
 					});
 					return parseFloat(cost);
 				}
@@ -922,7 +950,7 @@
 				},
 				// special fields for items
 				reservedFields: function () {
-					return ['quantity', 'id', 'item_number', 'price', 'name', 'shipping', 'tax', 'taxRate'];
+					return ['quantity', 'id', 'item_number', 'price', 'name', 'shipping', 'discount', 'tax', 'taxRate'];
 				},
 
 				// return values for all reserved fields if they exist
@@ -1230,6 +1258,7 @@
 					var data = {
 							  currency	: evoShop.currency().code
 							, shipping	: evoShop.shipping()
+							, discount	: evoShop.discount()
 							, tax		: evoShop.tax()
 							, taxRate	: evoShop.taxRate()
 							, itemCount : evoShop.find({}).length
@@ -1802,6 +1831,9 @@
 					}
 					, shipping: function () {
 						return evoShop.toCurrency(evoShop.shipping());
+					}
+					, discount: function () {
+						return evoShop.toCurrency(evoShop.discount());
 					}
 					, grandTotal: function () {
 						return evoShop.toCurrency(evoShop.grandTotal());
