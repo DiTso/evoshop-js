@@ -924,6 +924,8 @@
 					if (this.quantity() < 1) {
 						this.remove();
 						return null;
+					}else{
+						evoShop.trigger("changeQuantity", [sc_items[this.id()]]);
 					}
 					return this;
 
@@ -1393,6 +1395,7 @@
 				, checkoutFail			: null
 				, beforeCheckout		: null
 				, beforeRemove			: null
+				, changeQuantity		: null
 			};
 			
 			// extend with base events

@@ -94,9 +94,8 @@
 			<input type="radio" class="item_color" name="color" value="Yellow"/><label>Yellow</label>
 			<input type="radio" class="item_color" name="color" value="Red"/><label>Red</label>
 			
-			<input type="hidden" class="item_shipping" value="0" />	
+			<input type="hidden" class="item_shipping" value="5" />	
 			<input type="hidden" class="item_quantity" value="3" />
-			<input type="hidden" class="item_test" value="test" />
 			<input type="button" class="item_add" value="add to cart" />
 		</li>
 
@@ -158,6 +157,21 @@
     		localStorage.setItem('evoShop_discount', 0);
 			evoShop.update();
     	});
+
+    	evoShop.bind( 'beforeAdd' , function( item ){
+		  console.log( 'add ' + item.get('name') ); 
+		});
+		evoShop.bind( 'beforeRemove' , function( item ){
+		  console.log( 'remove ' + item.get('name') ); 
+		});
+		evoShop.bind( 'changeQuantity' , function( item ){
+			if ( item ){	
+		  		if (item.get('quantity') > 5) {
+		  			item.quantity( 5 );
+		  			alert('max items to buy 5pcs.'); 
+		  		}
+			}
+		});
     </script>
 </body>  
 </html>
