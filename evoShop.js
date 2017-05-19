@@ -115,7 +115,7 @@
 						//{ view: "remove", text: "Remove", label: false }
 					],
 					//new cart view
-					rowTpl : "%name% %size% %color% %price% %test% %quantity% %summ%" + "<span class='evoShop_decrement'>-</span>" + "<span class='evoShop_increment'>+</span>",
+					rowTpl : "%name% %size% %color% %price% %test% %quantity% %total% " + "<span class='evoShop_decrement'>-</span>" + "<span class='evoShop_increment'>+</span>",
 
 					//tinycart view
 					tinyCartStyle				: "div",//table, div, ul
@@ -672,7 +672,7 @@
 						var plchldr = placeholder.replace(/%/g,'');
 						var val = item.get(plchldr); 
 						if (plchldr == 'price'){ val = evoShop.toCurrency(val || 0); }
-						if (plchldr == 'summ'){ val = evoShop.toCurrency(item.get('price')*item.get('quantity') || 0); }
+						if (plchldr == 'total'){ val = evoShop.toCurrency(val || 0); }
 						if (val != undefined){
 							return val;
 						}else{
